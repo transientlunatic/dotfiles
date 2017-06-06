@@ -1,0 +1,8 @@
+
+# Set up the virtual environment path so that virtual environments are
+# loaded for the correct machine when using a network file system.
+
+MACHINE=$(uname -n)
+export WORKON_HOME=$HOME/.virtualenvs/$MACHINE
+export PROJECT_HOME=$HOME/repositories
+source /usr/local/bin/virtualenvwrapper.sh
