@@ -1,9 +1,0 @@
-# Aliases for various jupyter notebook-related things which I find
-# helpful to keep handy, like being able to connect to a notebook
-# running on a remote machine, for example.
-
-function connect_notebook_ssh {
-    # Connect to a notebook running on another machine via an ssh
-    # port-forward
-    ssh -L 8080:aries:80 localhost
-};

@@ -1,0 +1,23 @@
+#-------------------------------#
+# Daniel's customisations       #
+#-------------------------------#
+
+# Use the powerline toolkit
+source ~/.dotfiles/powerline/.bash-powerline.sh
+
+# Get access to simple emoji conversions. An emoji can then be printed
+# with "to_emoji :grinning:" for example.
+source ~/.dotfiles/emoji/emoji.sh
+
+# LIGO-based aliases
+# These are aliases specific to LIGO Scientific Collaboration Grid utilities
+source ~/.dotfiles/ligo/ligo_aliases
+
+# Python-based customisations
+source ~/.dotfiles/jupyter/jupyter.sh
+source ~/.dotfiles/python/.pythonvenv
+
+# Local binaries
+# enable locally-stored executable files to be run easily.
+# NB this is a potential security risk.
+PATH=$PATH:~/.local/bin
