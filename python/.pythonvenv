@@ -5,4 +5,10 @@
 MACHINE=$(uname -n)
 export WORKON_HOME=$HOME/.virtualenvs/$MACHINE
 export PROJECT_HOME=$HOME/repositories
-source /usr/local/bin/virtualenvwrapper.sh
+
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+    source /usr/local/bin/virtualenvwrapper.sh  
+elif [-f ${HOME}/.local/bin/virtualenvwrapper.sh ]; then
+    source ${HOME}/.local/bin/virtualenvwrapper.sh
+fi
+     
