@@ -8,7 +8,7 @@ export PROJECT_HOME=$HOME/repositories
 
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
     source /usr/local/bin/virtualenvwrapper.sh  
-elif [-f ${HOME}/.local/bin/virtualenvwrapper.sh ]; then
+elif [ -f ${HOME}/.local/bin/virtualenvwrapper.sh ]; then
     source ${HOME}/.local/bin/virtualenvwrapper.sh
 fi
      
