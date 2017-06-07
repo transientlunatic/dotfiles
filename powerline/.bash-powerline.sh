@@ -179,7 +179,7 @@ __powerline() {
 	# Screen information
 	if shopt -q promptvars; then
             __powerline_screen_info="$(__screen_info)"
-            PS1+="$BG_YELLOW$FG_BASE3\${__powerline_venv_info}$RESET"
+            PS1+="$BG_YELLOW$FG_BASE3\${__powerline_screen_info}$RESET"
         else
             # promptvars is disabled. Avoid creating unnecessary env var.
             PS1+="$BG_YELLOW$FG_BASE3$(__screen_info)$RESET"
