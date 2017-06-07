@@ -135,6 +135,14 @@ __powerline() {
 	     echo " 🐍 `basename \"$VIRTUAL_ENV\"` "
 	 fi
     }
+
+    __screen_info(){
+	if test -z "${STY}" ; then
+	    echo ""
+	else
+	    echo "  ${STY#[0-9]*.} "
+	fi
+    }
     
     ps1() {
         # Check the exit code of the previous command and display different
@@ -166,6 +174,15 @@ __powerline() {
         else
             # promptvars is disabled. Avoid creating unnecessary env var.
             PS1+="$BG_ORANGE$FG_BASE3$(__venv_info)$RESET"
+        fi
+
+	# Screen information
+	if shopt -q promptvars; then
+            __powerline_screen_info="$(__screen_info)"
+            PS1+="$BG_YELLOW$FG_BASE3\${__powerline_venv_info}$RESET"
+        else
+            # promptvars is disabled. Avoid creating unnecessary env var.
+            PS1+="$BG_YELLOW$FG_BASE3$(__screen_info)$RESET"
         fi
 	
         PS1+="$BG_EXIT$FG_BASE3 $PS_SYMBOL $RESET "
