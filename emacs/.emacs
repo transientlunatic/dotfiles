@@ -4,6 +4,7 @@
 (load-library "find-lisp")
 
 
+
 ;;
 ;; Language and display customisations
 ;;
@@ -20,7 +21,36 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 129 :width normal :family "Hack"))))
-)
+ '(org-document-title ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5 :underline nil))))
+ '(org-level-1 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.75))))
+ '(org-level-2 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5))))
+ '(org-level-3 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.25))))
+ '(org-level-4 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.1))))
+ '(org-level-5 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway"))))
+ '(org-level-6 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway"))))
+ '(org-level-7 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway"))))
+ '(org-level-8 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway")))))
+
+;; Custom font faces for orgmode
+(let* ((variable-tuple (cond ((x-list-fonts "Raleway") '(:font "Raleway"))
+			     ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+                             ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+                             ((x-list-fonts "Verdana")         '(:font "Verdana"))
+                             ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+                             (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+       (base-font-color     (face-foreground 'default nil 'default))
+       (headline           `(:inherit default :weight normal :foreground ,base-font-color :height 1.5)))
+
+  (custom-theme-set-faces 'user
+                          `(org-level-8 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-7 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-6 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-5 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+                          `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+                          `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+                          `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+                          `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
 
 
 
@@ -35,7 +65,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(inhibit-startup-screen t)
- )
+ '(safe-local-variable-values (quote ((org-emphasis-alist)))))
 
 ;;
 ;; Load the package repositories
@@ -82,9 +112,13 @@
 	     :config
 	     (progn
 	       (setq org-directory "~/notes")
+	       (setq project-directory (concat org-directory "/projects"))
+
+	       (setq org-startup-with-inline-images t)
+	       
 	       (setq org-default-notes-file (concat org-directory "/captures.org"))
 	       (setq org-agenda-files
-		     (find-lisp-find-files "~/notes" "\.org$"))
+		     (find-lisp-find-files org-directory "\.org$"))
 	       ;; Org-mode workflow states
 	       (setq org-todo-keywords
 		     '((sequence "TODO" "TODAY" "TEST" "REPORT" "MERGE" "|" "DONE" "DELEGATED")
@@ -93,8 +127,8 @@
 		     )
 	       ;; Set Org TODO Faces
 	       (setq org-todo-keyword-faces
-		     '(("TODO" . (:weight bold :background "firebrick" :foreground "white"))
-		       ("TODAY" . (:weight bold :background "IndianRed2" :foreground "white"))
+		     '(("TODO" . (:weight bold  :foreground "firebrick"))
+		       ("TODAY" . (:weight bold :foreground "IndianRed2" :background "white"))
 		       ("TEST" . (:weight bold :background "orange" :foreground "black"))
 		       ("REPORT" . (:weight bold :background "thistle" :foreground "black"))
 		       ("STARTED" . "yellow")
@@ -103,16 +137,43 @@
 		       ("HABIT" . (:weight bold :background "DeepPink" :foreground "white"))
 		       ("CANCELED" . (:foreground "light grey" :weight bold)))
 		     )
+
+	       	       
+	       (font-lock-add-keywords            ; A bit silly but my headers are now
+		'org-mode `(("^\\*+ \\(TODO\\) "  ; shorter, and that is nice canceled
+			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑")
+				       nil)))
+			    ("^\\*+ \\(TODAY\\) "
+			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐")
+				       nil)))
+			    ("^\\*+ \\(TO READ\\) "
+			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "📖")
+				       nil)))
+			    ("^\\*+ \\(CANCELED\\) "
+			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘")
+				       nil)))
+			    ("^\\*+ \\(DONE\\) "
+			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔")
+				       nil)))))
+
+
+	       
 	       ;; Set Org TAG Faces
 	       (setq org-tag-faces
-		     '(("minke" . (:background "LightSlateBlue" :foreground "white"))
-		       ;; 	("embargoed" . (:background "red" :foreground "white"))
+		     '( ("minke" . (:background "LightSlateBlue" :foreground "white"))
+			("telecon" . (:background "Blue" :foreground "white"))
+			("embargoed" . (:background "red" :foreground "white"))
 		       ))
 	       
 	       ;; Capture templates
 	       (setq org-capture-templates
 		     '(
-		       ("w" "Web site" entry (file+olp "~/notes/capture.org") "* %c :website:\n%U %?%:initial")
+		       
+		       ("g" "Glossary" entry (file+olp (concat org-directory "/glossary.org") "Glossary")
+			"* %^{Term}\n :PROPERTIES:\n :abbreviation: %^{Tag}\n :END:\n %?\n" :kill-buffer t)
+		       
+		       ("w" "Web site" entry (file+olp (concat org-directory "/capture.org") "Website" )
+			"* %c :website:\n%U %?%:initial" :kill-buffer t)
 		       
 		       )
 		     )
@@ -123,42 +184,30 @@
 			:publishing-directory "~/www/org/"
 			:publishing-function org-twbs-publish-to-html
 			:with-sub-superscript nil
-			)))
-	       (custom-theme-set-faces 'user
-				       `(org-level-8 ((t (,@headline ,@variable-tuple))))
-				       `(org-level-7 ((t (,@headline ,@variable-tuple))))
-				       `(org-level-6 ((t (,@headline ,@variable-tuple))))
-				       `(org-level-5 ((t (,@headline ,@variable-tuple))))
-				       `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-				       `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-				       `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-				       `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-				       `(org-todo ((t (,@headline ,@variable-tuple :height 1.1))))
-				       `(org-document-title ((t (,@headline ,@variable-tuple :height 2.5  :underline nil)))))
+			)
 
+		       )
+		     )
+		 
+	       ;; Org smart-quotes
+	       (setq org-export-with-smart-quotes t)
+
+	       ;; Org export css
+	       (setq org-export-htmlize-output-type 'css)
+	       
 	       ;; Org babel
 	       
 	       (org-babel-do-load-languages
 		'org-babel-load-languages
 		'((emacs-lisp . t)
 		  (python . t)
+		  (ipython . t)
 		  (ditaa . t)
 		  (dot . t)
 		  (gnuplot . t)
 		  (org . t)
 		  (latex . t)))
 
-	       ;; Custom font faces for orgmode
-	       (let* ((variable-tuple (cond ((x-list-fonts "Raleway") '(:font "Raleway"))
-					    ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-					    ((x-list-fonts "Verdana")         '(:font "Verdana"))
-					    ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-					    (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-		      (base-font-color     (face-foreground 'default nil 'default))
-		      (headline           `(:inherit default :foreground ,base-font-color)))
-		 
-		 
-		 )
 
 	       )
 
@@ -220,7 +269,6 @@
 ;;
 
 (use-package org-protocol
-  :ensure t
   :after (org)
   :init (server-start)
   )
@@ -239,10 +287,9 @@
 ;;
 ;; Spaceline
 ;;
-(use-package spaceline-config
-  :ensure t
-  :init (spaceline-emacs-theme)
-  )
+;(use-package spaceline-config
+;  :init (spaceline-emacs-theme)
+;  )
 
 
 
@@ -271,7 +318,6 @@
 ;;
 
 (use-package ox-latex
-  :ensure t
   :config
   (progn
     (add-to-list 'org-latex-classes
@@ -282,6 +328,7 @@
 		   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
 		   ("\\paragraph{%s}" . "\\paragraph*{%s}")
 		   ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+    
     (add-to-list 'org-export-exclude-tags
 		 '("embargoed")
 		 )
@@ -322,26 +369,65 @@
 
 (use-package ox-publish
   :after (org-jekyll)
-  :ensure t
   :config
   (progn
     (setq org-publish-project-alist
-      '(("org-gravwaves"
-         :base-directory "~/notes/gravitational-waves"
-         :publishing-directory "~/website/notebook/gravitational-waves"
-	 :recursive t
-         :publishing-function org-twbs-publish-to-html ;;org-twbs-publish-to-html
-         :with-sub-superscript nil
-         )
-      ("org-static"
-       :base-directory "~/org/"
-       :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
-       :publishing-directory "~/public_html/"
-       :recursive t
-       :publishing-function org-publish-attachment
-       ))
+	  '(
+	    ("org-gravwaves"
+	     :base-directory "~/notes/gravitational-waves"
+	     :publishing-directory "~/www/notebook/gravitational-waves"
+	     :recursive t
+	     :publishing-function org-twbs-publish-to-html ;;org-twbs-publish-to-html
+	     :with-sub-superscript nil
+	     )
+	    
+	    ("org-static"
+	     :base-directory "~/notes/"
+	     :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	     :publishing-directory "~/www/"
+	     :recursive t
+	     :publishing-function org-publish-attachment
+	     )
+	    
+	    ("papers-library"
+	     :base-directory "~/notes/papers"
+	     :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	     :publishing-directory "~/www/papers"
+	     :recursive t
+	     :publishing-function org-publish-attachment
+	     )
+	    
+	    ("bibliography"
+	     :base-directory "~/notes/bibliography"
+	     :publishing-directory "~/www/bibliography"
+	     :publishing-function org-twbs-publish-to-html
+	     :with-sub-superscript nil
+	     :auto-sitemap t
+	     )
+	    
+	    ("journal"
+	     :base-directory "~/notes/research"
+	     :publishing-directory "~/www/journal"
+	     :publishing-function org-twbs-publish-to-html
+	     :with-sub-superscript nil
+	     :auto-sitemap t
+	     )
+	    
+	    ("projects"
+	     :base-directory "~/notes/projects"
+	     :publishing-directory "~/www/projects"
+	     :publishing-function org-twbs-publish-to-html
+	     :with-sub-superscript nil
+	     :auto-sitemap t
+	     )
+	    )
       )
     )
+  )
+
+(use-package magit
+  :ensure t
+  :commands magit-status
   )
 
 ;; (clear-abbrev-table global-abbrev-table)
