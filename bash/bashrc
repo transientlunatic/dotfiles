@@ -2,6 +2,12 @@
 # Daniel's customisations       #
 #-------------------------------#
 
+# Run the screenfetch sript on login
+#source ~/.dotfiles/screenfetch/screenfetch
+
+# weather
+source ~/.dotfiles/bash/weather.sh
+
 # Use the powerline toolkit
 source ~/.dotfiles/powerline/.bash-powerline.sh
 
