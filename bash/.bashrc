@@ -128,7 +128,7 @@ source ~/.dotfiles/emoji/emoji.sh
 source ~/.dotfiles/ligo/ligo_aliases
 
 # Python-based customisations
-source ~/.dotfiles/jupyter/jupyter.sh
+source ~/.dotfiles/jupyter/.jupyter.sh
 source ~/.dotfiles/python/.pythonvenv
 
 # Local binaries

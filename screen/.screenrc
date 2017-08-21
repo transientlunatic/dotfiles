@@ -1,0 +1,11 @@
+# get rid of the starting message
+startup_message off
+
+# experience screen in glorious technicolor
+term screen-256color
+
+# make a status bar on the screen so i know where I am
+hardstatus alwayslastline '%{= G}[ %{G}%H %{g}][%= %{= w}%?%-Lw%?%{= R}%n*%f %t%?%{= R}(%u)%?%{= w}%+Lw%?%= %{= g}][ %{y}Load: %l %{g}][%{B}%Y-%m-%d %{W}%c:%s %{g}]'
+
+# turn on scrolling
+termcapinfo xterm* ti@:te@
