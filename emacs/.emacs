@@ -20,7 +20,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 129 :width normal :family "Hack"))))
+ '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Source Code Pro"))))
  '(org-document-title ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5 :underline nil))))
  '(org-level-1 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.75))))
  '(org-level-2 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5))))
@@ -244,7 +244,7 @@
 ;;
 
 (use-package org-wiki
-  :ensure t
+  :ensure f
   :after (org)
   :config
   (progn 
