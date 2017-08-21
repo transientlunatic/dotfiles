@@ -1,0 +1,13 @@
+[user]
+	name = Daniel Williams
+	email = daniel.williams@ligo.org
+	signingkey = daniel.williams@ligo.org
+[commit]
+	gpgsign = true
+[http]
+	cookiefile = /tmp/ecpcookie.u5061
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
