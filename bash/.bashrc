@@ -135,3 +135,6 @@ source ~/.dotfiles/python/.pythonvenv
 # enable locally-stored executable files to be run easily.
 # NB this is a potential security risk.
 PATH=$PATH:~/.local/bin
+
+# Emacs based aliases (mostly for org-mode)
+source ~/.emacs.d/bash-aliases
