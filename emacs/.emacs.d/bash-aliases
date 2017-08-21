@@ -1,2 +1,2 @@
 
-alias todo=emacs -batch -l ~/.dotfiles/emacs/.emacs-batch/org-agenda.el -eval '(org-batch-agenda "t")' 2> /dev/null
+alias todo="emacs -batch -l ~/.dotfiles/emacs/.emacs-batch/org-agenda.el -eval '(org-batch-agenda \"t\")' 2> /dev/null"
