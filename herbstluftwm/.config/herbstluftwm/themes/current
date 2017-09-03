@@ -22,7 +22,7 @@ export HLWM_WINDOW_PADDING=20
 
 # Panel
 export HLWM_PANEL_HEIGHT=25
-export HLWM_PANEL_FONT=""
+export HLWM_PANEL_FONT="DejaVu Sans Mono-10"
 export HLWM_PANEL_BOTTOM=false
 export HLWM_PANEL_MARGIN="-1 -1" # Up/Down Left/Right (-1 is respects $HLWM_WINDOW_PADDING)
 

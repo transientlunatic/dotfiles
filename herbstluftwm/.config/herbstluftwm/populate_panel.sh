@@ -24,13 +24,13 @@ fi
     #   date    ^fg(#efefef)18:33^fg(#909090), 2013-10-^fg(#efefef)29
 
     while true ; do
-         hlwm_indicator_music
-    #     hlwm_indicator_volume &
-    #     hlwm_indicator_network &
-    #     hlwm_indicator_battery &
-    #     hlwm_indicator_clock &
-    #     hlwm_indicator_backlight &
-    #     sleep 1 || break
+        hlwm_indicator_music
+        hlwm_indicator_volume &
+        hlwm_indicator_network &
+        hlwm_indicator_battery &
+        hlwm_indicator_clock &
+        hlwm_indicator_backlight &
+        sleep 1 || break
     done > >(uniq_linebuffered) &
 
     childpid=$!
@@ -149,3 +149,5 @@ fi
     done
 
 } 2> /dev/null
+
+# vim: set ts=4 sw=4 tw=0 et :
