@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+declare -A colors
+colors=(["background"]="#2d2d2d" ["foreground"]="#f9f9f9" # Fore- and Background
+        ["color0"]="#2d2d2d"     ["color8"]="#333333"     # Blacks
+        ["color1"]="#690a03"     ["color9"]="#d64937"     # Reds
+        ["color2"]="#13a43b"     ["color10"]="#6dfb2d"    # Greens
+        ["color3"]="#f5a711"     ["color11"]="#ffdc00"    # Yellows
+        ["color4"]="#0f6cc9"     ["color12"]="#32abd8"    # Blues
+        ["color5"]="#93116b"     ["color13"]="#c61f93"    # Magentas
+        ["color6"]="#3cb691"     ["color14"]="#53b4bd"    # Cyanes
+        ["color7"]="#d9d9d9"     ["color15"]="#f9f9f9")   # Whites
+
+# Wallpaper
+export HLWM_WALLPAPER="$HLWM_CONF_DIR/wallpapers/fall.jpg"
+
+# Shadow
+export HLWM_COMPOSITING=true
+
+# Padding
+export HLWM_WINDOW_PADDING=20
+
+# Panel
+export HLWM_PANEL_HEIGHT=25
+export HLWM_PANEL_FONT="DejaVu Sans Mono-10"
+
+# Colors
+export HLWM_FG_COLOR=${colors["foreground"]}
+export HLWM_ACCENT_COLOR=${colors["color9"]}
+export HLWM_BG_COLOR=${colors["background"]}
