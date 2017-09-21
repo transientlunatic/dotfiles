@@ -46,9 +46,11 @@ else
 fi
 
 # Apply padding to make room for the panel
-herbstclient pad $monitor ${padding[@]}
+hc pad $monitor ${padding[@]}
 
 # Start the panel
 $HLWM_CONF_DIR/populate_panel.sh $monitor |
-lemonbar -p -g ${panel_width}x${HLWM_PANEL_HEIGHT}+${x}+${y} -f "$HLWM_PANEL_FONT" -f ${icon_font} -u2 -B$HLWM_BG_ACOLOR -F$HLWM_FG_ACOLOR |
+lemonbar -g ${panel_width}x${HLWM_PANEL_HEIGHT}+${x}+${y} -f "$HLWM_PANEL_FONT" -f "$icon_font" -u2 -B$HLWM_BG_ACOLOR -F$HLWM_FG_ACOLOR |
 $HLWM_CONF_DIR/panel_handler.sh
+
+# vim: set ts=4 sw=4 tw=0 et :

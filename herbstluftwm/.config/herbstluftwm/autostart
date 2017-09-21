@@ -6,6 +6,7 @@ hc() {
     herbstclient "$@"
 }
 
+export -f hc
 hc emit_hook reload
 
 export HLWM_CONF_DIR=${HOME}/.config/herbstluftwm #$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
