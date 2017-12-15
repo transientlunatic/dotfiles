@@ -1,0 +1,27 @@
+"""Python Startup File
+
+Add this file to ~/.py_startup to add history between sessions and auto-completion via the ESC key to the interactive Python interpreter.
+
+After adding this file, put something like the following line in your .bash_profile:
+
+    export PYTHONSTARTUP=/Users/richardhenry/.py_startup
+
+Requires a recent version of Python and the readline package, which you can install from http://pypi.python.org/pypi/readline.
+"""
+
+import atexit
+import os
+import readline
+import rlcompleter
+
+history = os.path.expanduser("~/.py_history")
+
+if os.path.exists(history):
+    readline.read_history_file(history)
+
+@atexit.register
+def write_history(history=history):
+    import readline
+    readline.write_history_file(history)
+
+del os, atexit, readline, rlcompleter, write_history, history

@@ -448,6 +448,8 @@
 (use-package magit
   :ensure t
   :commands magit-status
+  :config
+  (global-set-key (kbd "C-x g") 'magit-status)
   )
 
 ;; (clear-abbrev-table global-abbrev-table)
