@@ -234,15 +234,16 @@
 ;;
 
 (use-package org-journal
-	     :ensure t
-	     :commands org-journal-mode
-	     :after (org)
-	     :config
-	     (progn
-	       (setq org-journal-dir "~/notes/research/"
-		     org-journal-file-format "%Y-%m-%d.org")
-	       )
-	     )
+  :ensure t
+  :bind ("C-c C-#" . org-journal-new-entry)
+  :commands org-journal-mode
+  :after (org)
+  :config
+  (progn
+    (setq org-journal-dir "~/notes/research/"
+	  org-journal-file-format "%Y-%m-%d.org")
+    )
+  )
 ;;
 ;; Org ref
 ;;
