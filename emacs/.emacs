@@ -94,6 +94,16 @@
 )
 
 ;;
+;; PGP-style encyryption
+;;
+(use-package epa-file
+  :ensure t
+  :init (epa-file-enable)
+  )
+  
+
+
+;;
 ;; org-mode
 ;;
 
@@ -138,6 +148,11 @@
 		       ("CANCELED" . (:foreground "light grey" :weight bold)))
 		     )
 
+
+	       (org-link-set-parameters
+		"dcc"
+		:follow (lambda (handle)(browse-url (concat "https://dcc.ligo.org/LIGO-" handle)))
+		)
 	       	       
 	       (font-lock-add-keywords            ; A bit silly but my headers are now
 		'org-mode `(("^\\*+ \\(TODO\\) "  ; shorter, and that is nice canceled
@@ -363,6 +378,11 @@
 ;;
 
 (use-package org-jekyll
+  :after (org)
+  :ensure t
+  )
+
+(use-package ox-twbs
   :after (org)
   :ensure t
   )
