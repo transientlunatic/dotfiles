@@ -153,6 +153,9 @@
 		"dcc"
 		:follow (lambda (handle)(browse-url (concat "https://dcc.ligo.org/LIGO-" handle)))
 		)
+		
+
+	       
 	       	       
 	       (font-lock-add-keywords            ; A bit silly but my headers are now
 		'org-mode `(("^\\*+ \\(TODO\\) "  ; shorter, and that is nice canceled
