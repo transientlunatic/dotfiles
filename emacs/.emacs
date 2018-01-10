@@ -1,7 +1,7 @@
 ;;
 ;; load libraries
 ;;
-(load-library "find-lisp")
+;(load-library "find-lisp")
 
 
 
@@ -117,6 +117,7 @@
 		    ("C-c C-w" . org-refile)
 		    ("C-c j" . org-clock-goto)
 		    ("C-c C-x C-o" . org-clock-out)
+		    ("C-c C-x C-b" . org-bibtex-yank)
 		    )
 	     :init (add-hook 'org-mode-hook (lambda () (set-input-method "TeX")))
 	     :config
@@ -127,8 +128,14 @@
 	       (setq org-startup-with-inline-images t)
 	       
 	       (setq org-default-notes-file (concat org-directory "/captures.org"))
-	       (setq org-agenda-files
-		     (find-lisp-find-files org-directory "\.org$"))
+	       (setq org-agenda-files (list
+				       (concat org-directory "/diary/")
+				       (concat org-directory "/projects/")
+				       (concat org-directory "/cals/google.org")
+				       (concat org-directory "/cals/international.org")
+				       (concat org-directory "/cals/pro14.org")
+				       (concat org-directory "/cals/eprc.org")
+				       (concat org-directory "/cals/hyndlandrfc.org") ))
 	       ;; Org-mode workflow states
 	       (setq org-todo-keywords
 		     '((sequence "TODO" "TODAY" "TEST" "REPORT" "MERGE" "|" "DONE" "DELEGATED")
@@ -238,7 +245,8 @@
 
 (use-package org-journal
   :ensure t
-  :bind ("C-c C-#" . org-journal-new-entry)
+  :bind (("C-c C-#" . org-journal-new-entry)
+	 )
   :commands org-journal-mode
   :after (org)
   :config
@@ -262,14 +270,14 @@
 ;; Org wiki
 ;;
 
-(use-package org-wiki
-  :ensure f
-  :after (org)
-  :config
-  (progn 
-    (setq org-wiki-location "~/notes/wiki")
-    )
-  )
+;; (use-package org-wiki
+;;   :ensure f
+;;   :after (org)
+;;   :config
+;;   (progn 
+;;     (setq org-wiki-location "~/notes/wiki")
+;;     )
+;;   )
 
 ;;
 ;; Org mode bullets
@@ -283,18 +291,18 @@
 		  )
   )
 
-;;
-;; Org-protocol
-;;
+;; ;;
+;; ;; Org-protocol
+;; ;;
 
 (use-package org-protocol
   :after (org)
   :init (server-start)
   )
 
-;;
-;; Org export (ox)
-;;
+;; ;;
+;; ;; Org export (ox)
+;; ;;
 (use-package ox-twiki
   :ensure t
   :after (org)
@@ -312,7 +320,7 @@
 
 
 
-;; Org publication
+;; ;; Org publication
 (defun my-org-publish-buffer ()
   (interactive)
   (save-buffer)
@@ -377,9 +385,9 @@
   )
 
 
-;;
-;; org publication
-;;
+;; ;;
+;; ;; org publication
+;; ;;
 
 (use-package org-jekyll
   :after (org)
@@ -392,7 +400,6 @@
   )
 
 (use-package ox-publish
-  :after (org-jekyll)
   :config
   (progn
     (setq org-publish-project-alist
@@ -455,6 +462,25 @@
   :config
   (global-set-key (kbd "C-x g") 'magit-status)
   )
+
+(setq package-check-signature nil)
+
+
+(use-package org-gcal
+  :ensure t
+  :config
+  (setq org-gcal-client-id "1092420429930-3t547jdg1vvrlsobd7t43b2c5744rskg.apps.googleusercontent.com"
+	org-gcal-client-secret "xAC7lNhvTEZV2_oTM7yq0CA0"
+	org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
+			      ("ct240d39oc9kq21cq3bn70jii8@group.calendar.google.com" . "~/notes/cals/international.org")
+			      ("5vskop5jidv3vpo10gucv611s4eeau5f@import.calendar.google.com" . "~/notes/cals/pro14.org")
+			      ("q1v1coujord5pk00mdtdu6leuajqdclo@import.calendar.google.com" . "~/notes/cals/eprc.org")
+			      ("35g1iaek8hramundse382il848@group.calendar.google.com" . "~/notes/cals/hyndlandrfc.org")))
+	(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+	(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+	)
+
+
 
 ;; (clear-abbrev-table global-abbrev-table)
 
