@@ -177,6 +177,9 @@
 			    ("^\\*+ \\(CANCELED\\) "
 			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘")
 				       nil)))
+			    ("^\\*+ \\(GOAL\\) "
+			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "★")
+				       nil)))
 			    ("^\\*+ \\(DONE\\) "
 			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔")
 				       nil)))))
@@ -473,6 +476,7 @@
 	org-gcal-client-secret "xAC7lNhvTEZV2_oTM7yq0CA0"
 	org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
 			      ("ct240d39oc9kq21cq3bn70jii8@group.calendar.google.com" . "~/notes/cals/international.org")
+			      ("2s2ausqn4j7g6bjhoth8vnrj0c@group.calendar.google.com". "~/notes/cals/calls.org")
 			      ("5vskop5jidv3vpo10gucv611s4eeau5f@import.calendar.google.com" . "~/notes/cals/pro14.org")
 			      ("q1v1coujord5pk00mdtdu6leuajqdclo@import.calendar.google.com" . "~/notes/cals/eprc.org")
 			      ("35g1iaek8hramundse382il848@group.calendar.google.com" . "~/notes/cals/hyndlandrfc.org")))
