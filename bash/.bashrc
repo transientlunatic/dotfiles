@@ -112,6 +112,9 @@ fi
 # Daniel's customisations       #
 #-------------------------------#
 
+# Access passwords from pass
+source ~/.dotfiles/pass/.local/bin/scripted-creds
+
 # Run the screenfetch sript on login
 #source ~/.dotfiles/screenfetch/screenfetch
 

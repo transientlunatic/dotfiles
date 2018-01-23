@@ -1,0 +1,5 @@
+function lookup_pass_variable {
+	field=$1
+	credential=$2
+        echo $(pass $credential | grep "${field}" | cut -d ':' -f 2- | tr -d '[:space:]')
+}
