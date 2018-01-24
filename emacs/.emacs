@@ -4,7 +4,6 @@
 ;(load-library "find-lisp")
 
 
-
 ;;
 ;; Language and display customisations
 ;;
@@ -97,10 +96,10 @@
 ;;
 ;; PGP-style encyryption
 ;;
-(use-package epa-file
-  :ensure t
-  :init (epa-file-enable)
-  )
+;(use-package epa-file
+;  :ensure t
+;  :init (epa-file-enable)
+;  )
   
 
 
@@ -469,13 +468,11 @@
 
 (setq package-check-signature nil)
 
-
 (use-package org-gcal
   :ensure t
   :config
-  (setq org-gcal-client-id "1092420429930-3t547jdg1vvrlsobd7t43b2c5744rskg.apps.googleusercontent.com"
-	org-gcal-client-secret "xAC7lNhvTEZV2_oTM7yq0CA0"
-	org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
+  (require 'secrets "secrets.el.gpg")
+  (setq org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
 			      ("ct240d39oc9kq21cq3bn70jii8@group.calendar.google.com" . "~/notes/cals/international.org")
 			      ("2s2ausqn4j7g6bjhoth8vnrj0c@group.calendar.google.com". "~/notes/cals/calls.org")
 			      ("5vskop5jidv3vpo10gucv611s4eeau5f@import.calendar.google.com" . "~/notes/cals/pro14.org")
@@ -501,9 +498,4 @@
 ;; (set-default 'abbrev-mode t)
 
 ;; (setq save-abbrevs nil)
-
-
-
-
-
 
