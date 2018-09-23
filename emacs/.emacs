@@ -74,6 +74,9 @@
  '(org-agenda-files
    (quote
     ("/home/daniel/notes/diary/2018.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/damselfly.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org")))
+ '(package-selected-packages
+   (quote
+    (tide yaml-mode wanderlust virtualenv use-package-el-get spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dockerfile-mode diminish cdlatex auto-virtualenvwrapper)))
  '(safe-local-variable-values (quote ((org-emphasis-alist)))))
 
 ;;
@@ -139,6 +142,7 @@
 	       (setq project-directory (concat org-directory "/projects"))
 
 	       (setq org-startup-with-inline-images t)
+	       (setq org-image-actual-width nil)
 	       
 	       (setq org-default-notes-file (concat org-directory "/captures.org"))
 	       (setq org-agenda-files (list
@@ -211,7 +215,7 @@
 		     '(
 		       
 		       ("g" "Glossary" entry (file+olp (concat org-directory "/glossary.org") "Glossary")
-			"* %^{Term}\n :PROPERTIES:\n :abbreviation: %^{Tag}\n :END:\n %?\n" :kill-buffer t)
+			"* %^{Term}\n :PROPERTIES:\n :abbreviation: %^{tag}\n :END:\n %?\n" :kill-buffer t)
 		       
 		       ("w" "Web site" entry (file+olp (concat org-directory "/capture.org") "Website" )
 			"* %c :website:\n%U %?%:initial" :kill-buffer t)
@@ -274,11 +278,11 @@
 ;;
 ;; Org ref
 ;;
-(use-package org-ref
-	     :ensure t
-	     :after (org)
-	     :commands org-ref
-	     )
+;; (use-package org-ref
+;; 	     :ensure t
+;; 	     :after (org)
+;; 	     :commands org-ref
+;; 	     )
 
 
 
@@ -505,6 +509,17 @@
 	)
 
 
+(use-package multi-web-mode
+  :ensure f
+  :config
+  (setq mweb-default-major-mode 'html-mode)
+  (setq mweb-tags 
+	'((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+	  (js-mode  "<script[^>]*>" "</script>")
+	  (css-mode "<style[^>]*>" "</style>")))
+  (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+  (multi-web-global-mode 1))
+
 
 ;; (clear-abbrev-table global-abbrev-table)
 
@@ -521,3 +536,10 @@
 
 ;; (setq save-abbrevs nil)
 
+(use-package tide
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save))
+)
