@@ -7,3 +7,8 @@ weather (){
        
     curl http://wttr.in/$loc
 }
+
+moon () {
+    # Print the phase of the moon with a nice ASCII art representation of the phase.
+     curl http://wttr.in/Moon
+}

@@ -20,7 +20,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Source Code Pro"))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Source Code Pro"))))
  '(org-document-title ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5 :underline nil))))
  '(org-level-1 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.75))))
  '(org-level-2 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5))))
@@ -64,7 +64,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("aaffceb9b0f539b6ad6becb8e96a04f2140c8faa1de8039a343a4f1e009174fb" default)))
  '(inhibit-startup-screen t)
+ '(package-selected-packages
+   (quote
+    (tide yaml-mode wanderlust virtualenv use-package-el-get spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dockerfile-mode diminish cdlatex auto-virtualenvwrapper)))
  '(safe-local-variable-values (quote ((org-emphasis-alist)))))
 
 ;;
@@ -75,8 +81,8 @@
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.org/packages/") 
 	     '("org" . "http://orgmode.org/elpa/") )
-(setq package-archive-priorities '(("org" . 4)
-                                   ("melpa" . 2)))
+;(setq package-archive-priorities '(("org" . 4)
+;                                   ("melpa" . 2)))
 (package-initialize)
 
 
@@ -126,6 +132,7 @@
 	       (setq project-directory (concat org-directory "/projects"))
 
 	       (setq org-startup-with-inline-images t)
+	       (setq org-image-actual-width nil)
 	       
 	       (setq org-default-notes-file (concat org-directory "/captures.org"))
 	       (setq org-agenda-files (list
@@ -198,7 +205,7 @@
 		     '(
 		       
 		       ("g" "Glossary" entry (file+olp (concat org-directory "/glossary.org") "Glossary")
-			"* %^{Term}\n :PROPERTIES:\n :abbreviation: %^{Tag}\n :END:\n %?\n" :kill-buffer t)
+			"* %^{Term}\n :PROPERTIES:\n :abbreviation: %^{tag}\n :END:\n %?\n" :kill-buffer t)
 		       
 		       ("w" "Web site" entry (file+olp (concat org-directory "/capture.org") "Website" )
 			"* %c :website:\n%U %?%:initial" :kill-buffer t)
@@ -261,11 +268,11 @@
 ;;
 ;; Org ref
 ;;
-(use-package org-ref
-	     :ensure t
-	     :after (org)
-	     :commands org-ref
-	     )
+;; (use-package org-ref
+;; 	     :ensure t
+;; 	     :after (org)
+;; 	     :commands org-ref
+;; 	     )
 
 
 
@@ -483,6 +490,17 @@
 	)
 
 
+(use-package multi-web-mode
+  :ensure f
+  :config
+  (setq mweb-default-major-mode 'html-mode)
+  (setq mweb-tags 
+	'((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+	  (js-mode  "<script[^>]*>" "</script>")
+	  (css-mode "<style[^>]*>" "</style>")))
+  (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+  (multi-web-global-mode 1))
+
 
 ;; (clear-abbrev-table global-abbrev-table)
 
@@ -499,3 +517,10 @@
 
 ;; (setq save-abbrevs nil)
 
+(use-package tide
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save))
+)
