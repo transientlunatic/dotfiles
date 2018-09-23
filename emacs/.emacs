@@ -2,7 +2,7 @@
 ;; load libraries
 ;;
 ;(load-library "find-lisp")
-
+(add-to-list 'load-path "~/.emacs.d/")
 
 ;;
 ;; Language and display customisations
@@ -20,7 +20,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Source Code Pro"))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Source Code Pro"))))
  '(org-document-title ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5 :underline nil))))
  '(org-level-1 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.75))))
  '(org-level-2 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5))))
@@ -64,7 +64,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(custom-safe-themes
+   (quote
+    ("aaffceb9b0f539b6ad6becb8e96a04f2140c8faa1de8039a343a4f1e009174fb" default)))
+ '(frame-background-mode (quote dark))
  '(inhibit-startup-screen t)
+ '(org-agenda-files
+   (quote
+    ("/home/daniel/notes/diary/2018.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/damselfly.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org")))
  '(safe-local-variable-values (quote ((org-emphasis-alist)))))
 
 ;;
@@ -73,9 +82,13 @@
 
 (require 'package)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.org/packages/") 
-	     '("org" . "http://orgmode.org/elpa/") )
+	     '("melpa" . "http://melpa.org/packages/")
+	     ;;'("milkbox" . "http://melpa.milkbox.net/packages/")
+	     '("org" . "http://orgmode.org/elpa/")
+	     )
+(add-to-list 'package-archives '("milkbox" . "http://melpa.milkbox.net/packages/") t)
 (setq package-archive-priorities '(("org" . 4)
+				   ("milkbox" . 1)
                                    ("melpa" . 2)))
 (package-initialize)
 
@@ -340,7 +353,12 @@
 
 
 
+;; Org table aggregate
 
+(use-package orgtbl-aggregate
+  :ensure t
+  :after (org)
+  )
 
 
 ;;
@@ -350,6 +368,10 @@
 (use-package ox-latex
   :config
   (progn
+    (setq org-latex-default-packages-alist (cons '("mathletters" "ucs" nil) org-latex-default-packages-alist))
+
+    (setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
+    
     (add-to-list 'org-latex-classes
 		 '("momento" "\\documentclass{momento}"
 		   ("\\chapter{%s}" . "\\chapter*{%s}")
