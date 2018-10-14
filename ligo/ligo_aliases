@@ -46,7 +46,9 @@ function ldg_scp {
 function ldg_ftp {
     # Copy files to a LIGO cluster machine via FTP
     url=$(get_ldg_url "$1")
-    globus-url-copy -tcp-bs 1048576 -vb -p 16 file:/$2 gsiftp://$LIGO_USER@$url/$3
+    globus-url-copy -tcp-bs 1048576 -vb -p 16 \
+    		    file:/$2 \
+    	     	    gsiftp://$LIGO_USER@$url/$3
 };
 
 
