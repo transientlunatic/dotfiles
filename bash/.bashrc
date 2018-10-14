@@ -72,13 +72,13 @@ xterm*|rxvt*)
     ;;
 esac
 
+alias ls='ls --color'
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
-
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
@@ -88,6 +88,9 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+
+# Make ls show dotfiles by default when in the ~/.dotfiles directory
+alias ls='[[ $(pwd) = ${HOME}/.dotfiles/* ]] && ls -a || ls'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -112,6 +115,9 @@ fi
 #-------------------------------#
 # Daniel's customisations       #
 #-------------------------------#
+
+# Access passwords from pass
+source ~/.dotfiles/pass/.local/bin/scripted-creds
 
 # Run the screenfetch sript on login
 #source ~/.dotfiles/screenfetch/screenfetch
@@ -141,3 +147,12 @@ PATH=$PATH:~/.local/bin
 
 # Emacs based aliases (mostly for org-mode)
 source ~/.emacs.d/bash-aliases
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+  eval "$(pyenv init -)"
+fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

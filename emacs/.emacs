@@ -1,9 +1,8 @@
 ;;
 ;; load libraries
 ;;
-(load-library "find-lisp")
-
-
+;(load-library "find-lisp")
+(add-to-list 'load-path "~/.emacs.d/")
 
 ;;
 ;; Language and display customisations
@@ -12,6 +11,7 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
+'(vc-follow-symlinks t)
 
 ;;;;; Custom set faces
 
@@ -20,7 +20,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "white" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Source Code Pro"))))
+ '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Source Code Pro"))))
  '(org-document-title ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5 :underline nil))))
  '(org-level-1 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.75))))
  '(org-level-2 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5))))
@@ -64,7 +64,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(custom-safe-themes
+   (quote
+    ("aaffceb9b0f539b6ad6becb8e96a04f2140c8faa1de8039a343a4f1e009174fb" default)))
+ '(frame-background-mode (quote dark))
  '(inhibit-startup-screen t)
+ '(org-agenda-files
+   (quote
+    ("/home/daniel/notes/diary/2018.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/damselfly.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org")))
+ '(package-selected-packages
+   (quote
+    (tide yaml-mode wanderlust virtualenv use-package-el-get spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dockerfile-mode diminish cdlatex auto-virtualenvwrapper)))
  '(safe-local-variable-values (quote ((org-emphasis-alist)))))
 
 ;;
@@ -73,9 +85,13 @@
 
 (require 'package)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.org/packages/") 
-	     '("org" . "http://orgmode.org/elpa/") )
+	     '("melpa" . "http://melpa.org/packages/")
+	     ;;'("milkbox" . "http://melpa.milkbox.net/packages/")
+	     '("org" . "http://orgmode.org/elpa/")
+	     )
+(add-to-list 'package-archives '("milkbox" . "http://melpa.milkbox.net/packages/") t)
 (setq package-archive-priorities '(("org" . 4)
+				   ("milkbox" . 1)
                                    ("melpa" . 2)))
 (package-initialize)
 
@@ -94,6 +110,16 @@
 )
 
 ;;
+;; PGP-style encyryption
+;;
+;(use-package epa-file
+;  :ensure t
+;  :init (epa-file-enable)
+;  )
+  
+
+
+;;
 ;; org-mode
 ;;
 
@@ -107,6 +133,7 @@
 		    ("C-c C-w" . org-refile)
 		    ("C-c j" . org-clock-goto)
 		    ("C-c C-x C-o" . org-clock-out)
+		    ("C-c C-x C-b" . org-bibtex-yank)
 		    )
 	     :init (add-hook 'org-mode-hook (lambda () (set-input-method "TeX")))
 	     :config
@@ -115,10 +142,17 @@
 	       (setq project-directory (concat org-directory "/projects"))
 
 	       (setq org-startup-with-inline-images t)
+	       (setq org-image-actual-width nil)
 	       
 	       (setq org-default-notes-file (concat org-directory "/captures.org"))
-	       (setq org-agenda-files
-		     (find-lisp-find-files org-directory "\.org$"))
+	       (setq org-agenda-files (list
+				       (concat org-directory "/diary/")
+				       (concat org-directory "/projects/")
+				       (concat org-directory "/cals/google.org")
+				       (concat org-directory "/cals/international.org")
+				       (concat org-directory "/cals/pro14.org")
+				       (concat org-directory "/cals/eprc.org")
+				       (concat org-directory "/cals/hyndlandrfc.org") ))
 	       ;; Org-mode workflow states
 	       (setq org-todo-keywords
 		     '((sequence "TODO" "TODAY" "TEST" "REPORT" "MERGE" "|" "DONE" "DELEGATED")
@@ -138,6 +172,14 @@
 		       ("CANCELED" . (:foreground "light grey" :weight bold)))
 		     )
 
+
+	       (org-link-set-parameters
+		"dcc"
+		:follow (lambda (handle)(browse-url (concat "https://dcc.ligo.org/LIGO-" handle)))
+		)
+		
+
+	       
 	       	       
 	       (font-lock-add-keywords            ; A bit silly but my headers are now
 		'org-mode `(("^\\*+ \\(TODO\\) "  ; shorter, and that is nice canceled
@@ -151,6 +193,9 @@
 				       nil)))
 			    ("^\\*+ \\(CANCELED\\) "
 			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘")
+				       nil)))
+			    ("^\\*+ \\(GOAL\\) "
+			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "★")
 				       nil)))
 			    ("^\\*+ \\(DONE\\) "
 			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔")
@@ -170,7 +215,7 @@
 		     '(
 		       
 		       ("g" "Glossary" entry (file+olp (concat org-directory "/glossary.org") "Glossary")
-			"* %^{Term}\n :PROPERTIES:\n :abbreviation: %^{Tag}\n :END:\n %?\n" :kill-buffer t)
+			"* %^{Term}\n :PROPERTIES:\n :abbreviation: %^{tag}\n :END:\n %?\n" :kill-buffer t)
 		       
 		       ("w" "Web site" entry (file+olp (concat org-directory "/capture.org") "Website" )
 			"* %c :website:\n%U %?%:initial" :kill-buffer t)
@@ -219,23 +264,25 @@
 ;;
 
 (use-package org-journal
-	     :ensure t
-	     :commands org-journal-mode
-	     :after (org)
-	     :config
-	     (progn
-	       (setq org-journal-dir "~/notes/research/"
-		     org-journal-file-format "%Y-%m-%d.org")
-	       )
-	     )
+  :ensure t
+  :bind (("C-c C-#" . org-journal-new-entry)
+	 )
+  :commands org-journal-mode
+  :after (org)
+  :config
+  (progn
+    (setq org-journal-dir "~/notes/research/"
+	  org-journal-file-format "%Y-%m-%d.org")
+    )
+  )
 ;;
 ;; Org ref
 ;;
-(use-package org-ref
-	     :ensure t
-	     :after (org)
-	     :commands org-ref
-	     )
+;; (use-package org-ref
+;; 	     :ensure t
+;; 	     :after (org)
+;; 	     :commands org-ref
+;; 	     )
 
 
 
@@ -243,14 +290,14 @@
 ;; Org wiki
 ;;
 
-(use-package org-wiki
-  :ensure f
-  :after (org)
-  :config
-  (progn 
-    (setq org-wiki-location "~/notes/wiki")
-    )
-  )
+;; (use-package org-wiki
+;;   :ensure f
+;;   :after (org)
+;;   :config
+;;   (progn 
+;;     (setq org-wiki-location "~/notes/wiki")
+;;     )
+;;   )
 
 ;;
 ;; Org mode bullets
@@ -264,18 +311,18 @@
 		  )
   )
 
-;;
-;; Org-protocol
-;;
+;; ;;
+;; ;; Org-protocol
+;; ;;
 
 (use-package org-protocol
   :after (org)
   :init (server-start)
   )
 
-;;
-;; Org export (ox)
-;;
+;; ;;
+;; ;; Org export (ox)
+;; ;;
 (use-package ox-twiki
   :ensure t
   :after (org)
@@ -293,7 +340,7 @@
 
 
 
-;; Org publication
+;; ;; Org publication
 (defun my-org-publish-buffer ()
   (interactive)
   (save-buffer)
@@ -310,7 +357,12 @@
 
 
 
+;; Org table aggregate
 
+(use-package orgtbl-aggregate
+  :ensure t
+  :after (org)
+  )
 
 
 ;;
@@ -320,6 +372,10 @@
 (use-package ox-latex
   :config
   (progn
+    (setq org-latex-default-packages-alist (cons '("mathletters" "ucs" nil) org-latex-default-packages-alist))
+
+    (setq org-latex-inputenc-alist '(("utf8" . "utf8x")))
+    
     (add-to-list 'org-latex-classes
 		 '("momento" "\\documentclass{momento}"
 		   ("\\chapter{%s}" . "\\chapter*{%s}")
@@ -358,17 +414,21 @@
   )
 
 
-;;
-;; org publication
-;;
+;; ;;
+;; ;; org publication
+;; ;;
 
 (use-package org-jekyll
   :after (org)
   :ensure t
   )
 
+(use-package ox-twbs
+  :after (org)
+  :ensure t
+  )
+
 (use-package ox-publish
-  :after (org-jekyll)
   :config
   (progn
     (setq org-publish-project-alist
@@ -428,7 +488,38 @@
 (use-package magit
   :ensure t
   :commands magit-status
+  :config
+  (global-set-key (kbd "C-x g") 'magit-status)
   )
+
+(setq package-check-signature nil)
+
+(use-package org-gcal
+  :ensure t
+  :config
+  (require 'secrets "secrets.el.gpg")
+  (setq org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
+			      ("ct240d39oc9kq21cq3bn70jii8@group.calendar.google.com" . "~/notes/cals/international.org")
+			      ("2s2ausqn4j7g6bjhoth8vnrj0c@group.calendar.google.com". "~/notes/cals/calls.org")
+			      ("5vskop5jidv3vpo10gucv611s4eeau5f@import.calendar.google.com" . "~/notes/cals/pro14.org")
+			      ("q1v1coujord5pk00mdtdu6leuajqdclo@import.calendar.google.com" . "~/notes/cals/eprc.org")
+			      ("35g1iaek8hramundse382il848@group.calendar.google.com" . "~/notes/cals/hyndlandrfc.org")))
+	(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+	(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+	)
+
+
+(use-package multi-web-mode
+  :ensure f
+  :config
+  (setq mweb-default-major-mode 'html-mode)
+  (setq mweb-tags 
+	'((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+	  (js-mode  "<script[^>]*>" "</script>")
+	  (css-mode "<style[^>]*>" "</style>")))
+  (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+  (multi-web-global-mode 1))
+
 
 ;; (clear-abbrev-table global-abbrev-table)
 
@@ -445,8 +536,10 @@
 
 ;; (setq save-abbrevs nil)
 
-
-
-
-
-
+(use-package tide
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)
+         (before-save . tide-format-before-save))
+)
