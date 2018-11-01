@@ -20,7 +20,7 @@ function get_ldg_url {
      fi
     declare -A hosts
     hosts=(
-	["atlas"]="atlas$node.atlas.aei.uni-hannover.de"
+	["atlas"]="ligodev.atlas.aei.uni-hannover.de"
 	["llo"]="ldas-$machine.ligo-la.caltech.edu"
 	["lho"]="ldas-$machine.ligo-wa.caltech.edu"
 	["cit"]="ldas-$machine.ligo.caltech.edu"
