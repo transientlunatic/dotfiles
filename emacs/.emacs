@@ -21,15 +21,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Source Code Pro"))))
- '(org-document-title ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5 :underline nil))))
- '(org-level-1 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.75))))
- '(org-level-2 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.5))))
- '(org-level-3 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.25))))
- '(org-level-4 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway" :height 1.1))))
- '(org-level-5 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway"))))
- '(org-level-6 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway"))))
- '(org-level-7 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway"))))
- '(org-level-8 ((t (:inherit default :weight normal :foreground "black" :height 1.5 :font "Raleway")))))
+ '(org-document-title ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.5 :underline nil))))
+ '(org-level-1 ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.75))))
+ '(org-level-2 ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.5))))
+ '(org-level-3 ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.25))))
+ '(org-level-4 ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.1))))
+ '(org-level-5 ((t (:inherit default :weight normal :height 1.5 :font "Raleway"))))
+ '(org-level-6 ((t (:inherit default :weight normal :height 1.5 :font "Raleway"))))
+ '(org-level-7 ((t (:inherit default :weight normal :height 1.5 :font "Raleway"))))
+ '(org-level-8 ((t (:inherit default :weight normal :height 1.5 :font "Raleway")))))
 
 ;; Custom font faces for orgmode
 (let* ((variable-tuple (cond ((x-list-fonts "Raleway") '(:font "Raleway"))
@@ -76,7 +76,7 @@
     ("/home/daniel/notes/diary/2018.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/damselfly.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org")))
  '(package-selected-packages
    (quote
-    (tide yaml-mode wanderlust virtualenv use-package-el-get spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dockerfile-mode diminish cdlatex auto-virtualenvwrapper)))
+    (tide yaml-mode wanderlust virtualenv use-package-el-get spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dockerfile-mode diminish cdlatex auto-virtualenvwrapper)))
  '(safe-local-variable-values (quote ((org-emphasis-alist)))))
 
 ;;
@@ -86,7 +86,6 @@
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "http://melpa.org/packages/")
-	     ;;'("milkbox" . "http://melpa.milkbox.net/packages/")
 	     '("org" . "http://orgmode.org/elpa/")
 	     )
 (add-to-list 'package-archives '("milkbox" . "http://melpa.milkbox.net/packages/") t)
@@ -246,7 +245,7 @@
 		'org-babel-load-languages
 		'((emacs-lisp . t)
 		  (python . t)
-		  (ipython . t)
+		  ;(ipython . t)
 		  (ditaa . t)
 		  (dot . t)
 		  (gnuplot . t)
