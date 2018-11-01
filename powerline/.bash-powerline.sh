@@ -6,8 +6,8 @@ __powerline() {
     readonly PS_SYMBOL_DARWIN=''
     readonly PS_SYMBOL_LINUX='🦄'
     readonly PS_SYMBOL_OTHER='%'
-    readonly GIT_BRANCH_SYMBOL='⑂ '
-    readonly GIT_BRANCH_CHANGED_SYMBOL='+'
+    readonly GIT_BRANCH_SYMBOL='🌵 '
+    readonly GIT_BRANCH_CHANGED_SYMBOL='✨'
     readonly GIT_NEED_PUSH_SYMBOL='⇡'
     readonly GIT_NEED_PULL_SYMBOL='⇣'
 
@@ -136,6 +136,12 @@ __powerline() {
 	 fi
     }
 
+    __python_info(){
+	# Check the python version
+	local pvers=$(python -V 2>&1 | grep -Po '(?<=Python )(.+)')
+	printf " $pvers "
+    }
+
     __screen_info(){
 	if test -z "${STY}" ; then
 	    echo ""
@@ -167,6 +173,15 @@ __powerline() {
             PS1+="$BG_BLUE$FG_BASE3$(__git_info)$RESET"
         fi
 
+	# Python version information
+	if shopt -q promptvars; then
+	    __powerline_python_info="$(__python_info)"
+            PS1+="$BG_ORANGE$FG_BASE3\${__powerline_python_info}$RESET"
+        else
+            # promptvars is disabled. Avoid creating unnecessary env var.
+            PS1+="$BG_ORANGE$FG_BASE3$(__python_info)$RESET"
+        fi
+	
 	# Python virtual environment information
 	if shopt -q promptvars; then
             __powerline_venv_info="$(__venv_info)"
