@@ -289,14 +289,14 @@
 ;; Org wiki
 ;;
 
-;; (use-package org-wiki
-;;   :ensure f
-;;   :after (org)
-;;   :config
-;;   (progn 
-;;     (setq org-wiki-location "~/notes/wiki")
-;;     )
-;;   )
+(use-package org-wiki
+  :ensure f
+  :after (org)
+  :config
+  (progn 
+    (setq org-wiki-location "~/notes/wiki/dnd")
+    )
+  )
 
 ;;
 ;; Org mode bullets
