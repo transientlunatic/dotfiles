@@ -22,7 +22,7 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Source Code Pro"))))
  '(org-document-title ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.5 :underline nil))))
- '(org-level-1 ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.75))))
+ '(org-level-1 ((t (:inherit default :color white :weight normal :height 1.5 :font "Raleway" :height 1.75))))
  '(org-level-2 ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.5))))
  '(org-level-3 ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.25))))
  '(org-level-4 ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.1))))
@@ -289,14 +289,19 @@
 ;; Org wiki
 ;;
 
-;; (use-package org-wiki
-;;   :ensure f
-;;   :after (org)
-;;   :config
-;;   (progn 
-;;     (setq org-wiki-location "~/notes/wiki")
-;;     )
-;;   )
+(use-package org-wiki
+  :ensure f
+  :after (org)
+  :config
+  (progn 
+    (setq org-wiki-location-list '(
+				   "~/notes/wiki/science"
+				   "~/notes/wiki/dnd"
+				   ))
+    
+    (setq org-wiki-location (car org-wiki-location-list))
+    )
+  )
 
 ;;
 ;; Org mode bullets
