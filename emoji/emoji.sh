@@ -110,6 +110,8 @@ declare -A emojis=(
     [":alien:"]="\U1f47d"
     [":robot:"]="\U1f916"
     [":poop:"]="\U1f4a9"
+    [":hankey:"]="\U1f4a9"
+    [":shit:"]="\U1f4a9"
     [":smiley_cat:"]="\U1f63a"
     [":smile_cat:"]="\U1f638"
     [":joy_cat:"]="\U1f639"
@@ -721,11 +723,12 @@ declare -A emojis=(
     [":outbox_tray:"]="\U1f4e4"
     [":inbox_tray:"]="\U1f4e5"
     [":package:"]="\U1f4e6"
+    [":card_file_box:"]="\U1f5c3"    
     [":mailbox:"]="\U1f4eb"
     [":mailbox_closed:"]="\U1f4ea"
     [":mailbox_with_mail:"]="\U1f4ec"
     [":mailbox_with_no_mail:"]="\U1f4ed"
-    [":postbox:"]="\U1f4ee"
+    [":postbox:"]="\U1f4ee"    
     [":ballot_box:"]="\U1f5f3"
     [":pencil2:"]="\U270f"
     [":black_nib:"]="\U2712"
@@ -1730,11 +1733,13 @@ declare -A emojis=(
     [":ok_hand_tone4:"]="\U1f44c\U1f3fe"
     [":ok_hand_tone5:"]="\U1f44c\U1f3ff"
     [":thumbsup:"]="\U1f44d"
+    [":+1:"]="\U1f44d"
     [":thumbsup_tone1:"]="\U1f44d\U1f3fb"
     [":thumbsup_tone2:"]="\U1f44d\U1f3fc"
     [":thumbsup_tone3:"]="\U1f44d\U1f3fd"
     [":thumbsup_tone4:"]="\U1f44d\U1f3fe"
     [":thumbsup_tone5:"]="\U1f44d\U1f3ff"
+    [":-1:"]="\U1f44e"
     [":thumbsdown:"]="\U1f44e"
     [":thumbsdown_tone1:"]="\U1f44e\U1f3fb"
     [":thumbsdown_tone2:"]="\U1f44e\U1f3fc"
@@ -1839,3 +1844,72 @@ declare -A emojis=(
     [":bath_tone5:"]="\U1f6c0\U1f3ff"
 )
 
+# Gets emoji from the associative array
+# Returns raw emoji character or word
+to_emoji () {
+    local value=${emojis[$1]}
+    [[ -n $value ]] && echo -e "$value " || echo "$1"
+}
+
+# Function to parse a line, split it into an array of words and then emojify
+# each word.
+parse_line () {
+    IFS=' '; read -ra words_arr <<< "$*"
+    out=()
+    for word in "${words_arr[@]}"; do
+        out+=("$(to_emoji "$word")")
+    done
+    echo "${out[*]}"
+}
+
+# Function to print help info.
+help () {
+    cat <<EOF
+    emojify - emoji on the command line 😱
+
+    USAGE: emojify [-h|--help] [-l|--list] TEXT
+EOF
+    if [[ 'list' == $1 ]]; then
+        echo 'Supported emojis:'
+        for key in ${!emojis[@]}; do
+            echo -e "$key ${emojis[$key]}"
+        done
+    fi
+    exit 0
+}
+
+# Checks the installed bash version to see if it's compatible with emojify
+check_version () {
+    if (( ${BASH_VERSION%%.*} >= 4 )); then
+        return
+    else
+        echo -e "Oh my! That’s a very old version of bash you’re using, we don’t support that anymore :(\n" \
+        "\nConsider upgrading it or, if you must use bash ${BASH_VERSION} download an old version of" \
+        "emojify from here: https://github.com/mrowa44/emojify/blob/old_bash_support/emojify"
+        exit 0
+    fi
+}
+
+# If arguments are provided on the command line then check for supported help
+# options or process the arguments as emoji names.
+if [[ -n $1 ]]; then
+    case $1 in
+    '-h' | '--help' )
+        help
+        ;;
+
+    '-l' | '--list' )
+        help list
+        ;;
+
+    * )
+        check_version
+        parse_line "$*"
+        ;;
+    esac
+else
+    check_version
+    while IFS=''; read -r line || [ -n "$line" ]; do
+        parse_line "$line"
+    done
+fi
