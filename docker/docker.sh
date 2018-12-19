@@ -1,3 +1,5 @@
 function dockerenv {
-    docker run -it -v $(pwd):$(pwd) -w $(pwd) -e USERID=$UID $1 /bin/bash
+    container=$1
+    shift
+    docker run -t -v $(pwd):$(pwd) -w $(pwd) -e USERID=$UID $container $@
 };
