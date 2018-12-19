@@ -2,11 +2,19 @@
 # Set up the virtual environment path so that virtual environments are
 # loaded for the correct machine when using a network file system.
 
+# Some setup is inspired by
+# https://medium.com/@henriquebastos/the-definitive-guide-to-setup-my-python-workspace-628d68552e14
+
 MACHINE=$(uname -n)
 export WORKON_HOME=$HOME/.virtualenvs/$MACHINE
 export PROJECT_HOME=$HOME/repositories
 
-if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+if [ -x "$(command -v pyenv)" ]; then
+   # Use the pyenv version of virtualenvwrapper if it's available.
+   eval "$(pyenv init -)"
+   export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
+   pyenv virtualenvwrapper_lazy
+elif [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
     source /usr/local/bin/virtualenvwrapper.sh  
 elif [ -f ${HOME}/.local/bin/virtualenvwrapper.sh ]; then
     source ${HOME}/.local/bin/virtualenvwrapper.sh
