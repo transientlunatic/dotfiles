@@ -176,6 +176,50 @@
 		"dcc"
 		:follow (lambda (handle)(browse-url (concat "https://dcc.ligo.org/LIGO-" handle)))
 		)
+
+
+	       (defun split-bibcode (handle)
+		 "Split a link containing multiple bibcodes and return just the first one."
+		 (interactive "sBibcode: ")
+		 (setq bibcode-list (split-string handle ","))
+		 (pop bibcode-list))
+
+	       (defun open-bibcodes (handle)
+		 "Open a bibcode link, potentially with several references."
+		 (setq bibcode-list (split-string handle ","))
+		 (dolist (bibcode bibcode-list)
+		   (browse-url
+		    (concat "https://ui.adsabs.harvard.edu/#abs/" bibcode "/abstract"))))
+
+
+					; glossary links
+	       (setq glossary-file "/home/daniel/thesis/chapters/glossary/glossary.org")
+	       (defun follow-abb-link (label)
+		 "Follow an abbreviation link to a label LABEL."
+		 (interactive "sLabel: ")
+		 (find-file glossary-file)
+		 (re-search-forward (format ":ABBREVIATION: %s" (upcase label)) nil t)
+		 )
+	       
+	       (org-link-set-parameters
+		"cite"
+		:follow (lambda (handle) (open-bibcodes handle))
+		)
+
+	       (org-link-set-parameters
+		"gls"
+		:face '(:foreground "orange")
+		:follow (lambda (handle)(find-file glossary-file))
+		)
+	       (org-link-set-parameters
+		"abb"
+		:face '(:foreground "orange")
+		:export (lambda (handle desc backend)
+			  (cond
+			   ((eq 'html backend)
+			    (format "<a href=\"glossary.html#%s\">%s</a>" handle (or desc (upcase handle))))))
+		:follow (lambda (handle)(follow-abb-link handle))
+		)
 		
 
 	       
