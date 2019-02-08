@@ -130,7 +130,7 @@ source ~/.dotfiles/powerline/.bash-powerline.sh
 
 # Get access to simple emoji conversions. An emoji can then be printed
 # with "to_emoji :grinning:" for example.
-source ~/.dotfiles/emoji/emoji.sh
+# source ~/.dotfiles/emoji/emoji.sh
 
 # LIGO-based aliases
 # These are aliases specific to LIGO Scientific Collaboration Grid utilities

@@ -2,7 +2,7 @@
 ;; load libraries
 ;;
 ;(load-library "find-lisp")
-(add-to-list 'load-path "~/.emacs.d/")
+;(add-to-list 'load-path "~/.emacs.d/")
 
 ;;
 ;; Language and display customisations
@@ -11,7 +11,9 @@
 (set-language-environment "UTF-8")
 (set-default-coding-systems 'utf-8)
 
-'(vc-follow-symlinks t)
+(setq vc-follow-symlinks t)
+;; Set up the line-wrapping
+(global-visual-line-mode t)
 
 ;;;;; Custom set faces
 
@@ -20,7 +22,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 100 :width normal :family "Source Code Pro"))))
+ '(default ((t (:family "Source Code Pro"))))
  '(org-document-title ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.5 :underline nil))))
  '(org-level-1 ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.75))))
  '(org-level-2 ((t (:inherit default :weight normal :height 1.5 :font "Raleway" :height 1.5))))
@@ -31,53 +33,6 @@
  '(org-level-7 ((t (:inherit default :weight normal :height 1.5 :font "Raleway"))))
  '(org-level-8 ((t (:inherit default :weight normal :height 1.5 :font "Raleway")))))
 
-;; Custom font faces for orgmode
-(let* ((variable-tuple (cond ((x-list-fonts "Raleway") '(:font "Raleway"))
-			     ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-                             ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-                             ((x-list-fonts "Verdana")         '(:font "Verdana"))
-                             ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-                             (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-       (base-font-color     (face-foreground 'default nil 'default))
-       (headline           `(:inherit default :weight normal :foreground ,base-font-color :height 1.5)))
-
-  (custom-theme-set-faces 'user
-                          `(org-level-8 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-7 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-6 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-5 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-                          `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-                          `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-                          `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-                          `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
-
-
-
-
-;;
-;; Custom-set variables
-;;
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(custom-safe-themes
-   (quote
-    ("aaffceb9b0f539b6ad6becb8e96a04f2140c8faa1de8039a343a4f1e009174fb" default)))
- '(frame-background-mode (quote dark))
- '(inhibit-startup-screen t)
- '(org-agenda-files
-   (quote
-    ("/home/daniel/notes/diary/2018.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/damselfly.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org")))
- '(package-selected-packages
-   (quote
-    (tide yaml-mode wanderlust virtualenv use-package-el-get spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dockerfile-mode diminish cdlatex auto-virtualenvwrapper)))
- '(safe-local-variable-values (quote ((org-emphasis-alist)))))
 
 ;;
 ;; Load the package repositories
@@ -93,6 +48,17 @@
 				   ("milkbox" . 1)
                                    ("melpa" . 2)))
 (package-initialize)
+
+
+
+;;
+;; Load dracula theme
+;;
+(setq custom-safe-themes t)
+(load-theme 'dracula t)
+
+;; Inhibit the startup screen
+(setq inhibit-startup-screen t)
 
 
 ;; 
@@ -111,12 +77,15 @@
 ;;
 ;; PGP-style encyryption
 ;;
-;(use-package epa-file
-;  :ensure t
-;  :init (epa-file-enable)
-;  )
+;; (use-package epa-file
+;;  :ensure t
+;;  :init (epa-file-enable)
+;;  )
   
-
+(use-package workgroups
+  :ensure t
+  :init   (workgroups-mode 1)
+  )
 
 ;;
 ;; org-mode
@@ -136,6 +105,28 @@
 		    )
 	     :init (add-hook 'org-mode-hook (lambda () (set-input-method "TeX")))
 	     :config
+	     ;; Custom font faces for orgmode
+	     (let* ((variable-tuple (cond ((x-list-fonts "Raleway") '(:font "Raleway"))
+					  ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+					  ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+					  ((x-list-fonts "Verdana")         '(:font "Verdana"))
+					  ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+					  (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+		    (base-font-color     (face-foreground 'default nil 'default))
+		    (headline           `(:inherit default :weight normal :foreground ,base-font-color :height 1.5)))
+
+	       (custom-theme-set-faces 'user
+				       `(org-level-8 ((t (,@headline ,@variable-tuple))))
+				       `(org-level-7 ((t (,@headline ,@variable-tuple))))
+				       `(org-level-6 ((t (,@headline ,@variable-tuple))))
+				       `(org-level-5 ((t (,@headline ,@variable-tuple))))
+				       `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+				       `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+				       `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+				       `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+				       `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+
+	     
 	     (progn
 	       (setq org-directory "~/notes")
 	       (setq project-directory (concat org-directory "/projects"))
@@ -160,9 +151,15 @@
 		     )
 	       ;; Set Org TODO Faces
 	       (setq org-todo-keyword-faces
-		     '(("TODO" . (:weight bold  :foreground "firebrick"))
-		       ("TODAY" . (:weight bold :foreground "IndianRed2" :background "white"))
-		       ("TEST" . (:weight bold :background "orange" :foreground "black"))
+		     '(("TODO" . (:weight bold
+				  :foreground "firebrick"))
+		       
+		       ("TODAY" . (:weight bold
+				   :foreground "IndianRed2"
+				   :background "white"))
+		       ("TEST" . (:weight bold
+				  :background "orange"
+				  :foreground "black"))
 		       ("REPORT" . (:weight bold :background "thistle" :foreground "black"))
 		       ("STARTED" . "yellow")
 		       ("TO READ" . (:weight bold :background "DarkOrchid" :foreground "white"))
@@ -337,8 +334,13 @@
   :ensure f
   :after (org)
   :config
-  (progn 
-    (setq org-wiki-location "~/notes/wiki/dnd")
+  (progn
+    (setq org-wiki-default-read-only t)  
+    (setq org-wiki-close-root-switch t)
+    (setq org-wiki-location-list '(
+				   "~/notes/wiki/science"
+				   "~/notes/wiki/dnd"))
+    (setq org-wiki-location (car org-wiki-location-list))
     )
   )
 
@@ -402,10 +404,10 @@
 
 ;; Org table aggregate
 
-(use-package orgtbl-aggregate
-  :ensure t
-  :after (org)
-  )
+;; (use-package orgtbl-aggregate
+;;   :ensure f
+;;   :after (org)
+;;   )
 
 
 ;;
@@ -540,7 +542,7 @@
 (use-package org-gcal
   :ensure t
   :config
-  (require 'secrets "secrets.el.gpg")
+  (require 'secrets "~/.emacs.d/secrets.el.gpg")
   (setq org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
 			      ("ct240d39oc9kq21cq3bn70jii8@group.calendar.google.com" . "~/notes/cals/international.org")
 			      ("2s2ausqn4j7g6bjhoth8vnrj0c@group.calendar.google.com". "~/notes/cals/calls.org")
@@ -586,3 +588,15 @@
   ;;        (typescript-mode . tide-hl-identifier-mode)
   ;;        (before-save . tide-format-before-save))
 )
+
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(csv-separators (quote (";" "	")))
+ '(package-selected-packages
+   (quote
+    (workgroups epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))
