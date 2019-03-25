@@ -90,7 +90,7 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # Make ls show dotfiles by default when in the ~/.dotfiles directory
-alias ls='[[ $(pwd) = ${HOME}/.dotfiles/* ]] && ls -a || ls'
+alias ls='[[ $(pwd) = ${HOME}/.dotfiles/* ]] && ls -a --color || ls --color'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -162,3 +162,9 @@ source ~/.dotfiles/docker/docker.sh
 
 alias slrwebcam='gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video1'
 
+# Make my prompt "normal" for software carpentry
+# Don't forget you commented powerline out to do this!
+# export PS1="SWC2019 $ "
+
+# Money Stuff
+source ~/.dotfiles/ledger/ledger.sh

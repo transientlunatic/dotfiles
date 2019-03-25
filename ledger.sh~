@@ -1,0 +1,8 @@
+#!/bin/bash
+
+LEDGERFILE=${USER}/notes/money
+
+function budget {
+    # Show the remaining balance in a given budget.
+    BUDGET=$1
+    ledger bal --current -f $LEDGERFILE/personal.ledger budgets:
