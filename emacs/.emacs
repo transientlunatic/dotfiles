@@ -2,7 +2,7 @@
 ;; load libraries
 ;;
 ;(load-library "find-lisp")
-(add-to-list 'load-path "~/.emacs.d/mylisp")
+(add-to-list 'load-path "~/.dotfiles/emacs/.emacs.d/mylisp/")
 
 ;;
 ;; Language and display customisations
@@ -23,7 +23,26 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Source Code Pro"))))
- )
+ '(org-block ((t (:inherit fixed-pitch))))
+ '(org-document-info ((t (:foreground "dark orange"))))
+ '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ '(org-document-title ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 2.0 :underline t))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ '(org-level-1 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.75))))
+ '(org-level-2 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.5))))
+ '(org-level-3 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.25))))
+ '(org-level-4 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.1))))
+ '(org-level-5 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
+ '(org-level-6 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
+ '(org-level-7 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
+ '(org-level-8 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
+ '(org-link ((t (:foreground "royal blue" :underline t))))
+ '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.6))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
+ '(variable-pitch ((t (:family "Lato" :height 150 :weight light)))))
 
 
 ;;
@@ -76,7 +95,11 @@
   
 (use-package workgroups
   :ensure t
-  :init   (workgroups-mode 1)
+  :diminish workgroups-mode
+  :config
+  (setq wg-prefix-key (kbd "C-c w"))
+  (workgroups-mode 1)
+  (wg-load "~/.dotfiles/emacs/.emacs.d/workgroups")
   )
 
 ;;
@@ -100,26 +123,21 @@
 		    (add-hook 'org-mode-hook 'flyspell-mode)
 	     :config
 	     ;; Custom font faces for orgmode
-	     (load "orgmode")
+	     (load "~/.dotfiles/emacs/.emacs.d/orgmode.el")
+	     (require 'org-crypt)
+             (org-crypt-use-before-save-magic)
+             (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+             (setq org-crypt-key "D9787B13D139D6A2")
+             (setq auto-save-default nil)
+
 	     
 	     )
 
-;;
-;; Org journal
-;;
 
-(use-package org-journal
-  :ensure t
-  :bind (("C-c C-#" . org-journal-new-entry)
-	 )
-  :commands org-journal-mode
-  :after (org)
-  :config
-  (progn
-    (setq org-journal-dir "~/notes/research/"
-	  org-journal-file-format "%Y-%m-%d.org")
-    )
-  )
+
+
+
+
 ;;
 ;; Org ref
 ;;
@@ -407,6 +425,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(csv-separators (quote (";" "	")))
+ '(org-agenda-files
+   (quote
+    ("~/thesis/chapters/sources/sources.org" "/diary/2019.org" "/home/daniel/notes/research/2019-01-08.org" "/home/daniel/notes/research/2019-01-09.org" "/home/daniel/notes/research/2019-01-15.org" "/home/daniel/notes/research/2019-01-16.org" "/home/daniel/notes/research/2019-03-11.org" "/home/daniel/notes/research/2019-03-12.org" "/home/daniel/notes/research/2019-03-13.org" "/home/daniel/notes/research/2019-03-18.org" "/home/daniel/notes/research/2019-03-19.org" "/home/daniel/notes/research/2019-03-20.org" "/home/daniel/notes/research/2019-03-25.org" "/home/daniel/notes/research/sitemap.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org")))
  '(package-selected-packages
    (quote
-    (workgroups epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))
+    (ox-rst workgroups epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))
