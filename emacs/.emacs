@@ -23,7 +23,26 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Source Code Pro"))))
- )
+ '(org-block ((t (:inherit fixed-pitch))))
+ '(org-document-info ((t (:foreground "dark orange"))))
+ '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ '(org-document-title ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 2.0 :underline t))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ '(org-level-1 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.75))))
+ '(org-level-2 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.5))))
+ '(org-level-3 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.25))))
+ '(org-level-4 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.1))))
+ '(org-level-5 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
+ '(org-level-6 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
+ '(org-level-7 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
+ '(org-level-8 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
+ '(org-link ((t (:foreground "royal blue" :underline t))))
+ '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.6))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
+ '(variable-pitch ((t (:family "Lato" :height 150 :weight light)))))
 
 
 ;;
@@ -76,7 +95,7 @@
   
 (use-package workgroups
   :ensure t
-  :init   (workgroups-mode 1)
+  ; :init   (workgroups-mode 1)
   )
 
 ;;
@@ -101,7 +120,11 @@
 	     :config
 	     ;; Custom font faces for orgmode
 	     (load "orgmode")
-	     
+	     (require 'org-crypt)
+	     (org-crypt-use-before-save-magic)
+	     (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+	     (setq org-crypt-key "D9787B13D139D6A2")
+	     (setq auto-save-default nil)
 	     )
 
 ;;
@@ -114,12 +137,30 @@
 	 )
   :commands org-journal-mode
   :after (org)
+  :custom
+  (org-journal-encrypt-journal t)
+  (org-journal-enable-encryption t)
+  (org-journal-dir "~/notes/research/")
+  (org-journal-file-type 'daily)
+  (org-journal-file-format "%Y-%m-%d.org")
+  (org-journal-enable-agenda-integration t)
+  (org-journal-carryover-items "TODO=\"TODO\"|TODO=\"TODAY\"|TODO=\"MERGE\"")
   :config
-  (progn
-    (setq org-journal-dir "~/notes/research/"
-	  org-journal-file-format "%Y-%m-%d.org")
-    )
+  (defun org-journal-find-location ()
+    ;; Open today's journal, but specify a non-nil prefix argument in order to
+    ;; inhibit inserting the heading; org-capture will insert the heading.
+    (org-journal-new-entry t)
+    ;; Position point on the journal's top-level heading so that org-capture
+    ;; will add the new entry as a child entry.
+    (goto-char (point-min)))
+  
+  (add-to-list 'org-capture-templates '(
+					("j" "Journal entry" entry (function org-journal-find-location)
+					 "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?")))
   )
+
+
+
 ;;
 ;; Org ref
 ;;
@@ -344,19 +385,19 @@
 
 (setq package-check-signature nil)
 
-(use-package org-gcal
-  :ensure t
-  :config
-  (require 'secrets "~/.emacs.d/secrets.el.gpg")
-  (setq org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
-			      ("ct240d39oc9kq21cq3bn70jii8@group.calendar.google.com" . "~/notes/cals/international.org")
-			      ("2s2ausqn4j7g6bjhoth8vnrj0c@group.calendar.google.com". "~/notes/cals/calls.org")
-			      ("5vskop5jidv3vpo10gucv611s4eeau5f@import.calendar.google.com" . "~/notes/cals/pro14.org")
-			      ("q1v1coujord5pk00mdtdu6leuajqdclo@import.calendar.google.com" . "~/notes/cals/eprc.org")
-			      ("35g1iaek8hramundse382il848@group.calendar.google.com" . "~/notes/cals/hyndlandrfc.org")))
-	(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
-	(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
-	)
+;; (use-package org-gcal
+;;   :ensure t
+;;   :config
+;;   (require 'secrets "~/.emacs.d/secrets.el.gpg")
+;;   (setq org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
+;; 			      ("ct240d39oc9kq21cq3bn70jii8@group.calendar.google.com" . "~/notes/cals/international.org")
+;; 			      ("2s2ausqn4j7g6bjhoth8vnrj0c@group.calendar.google.com". "~/notes/cals/calls.org")
+;; 			      ("5vskop5jidv3vpo10gucv611s4eeau5f@import.calendar.google.com" . "~/notes/cals/pro14.org")
+;; 			      ("q1v1coujord5pk00mdtdu6leuajqdclo@import.calendar.google.com" . "~/notes/cals/eprc.org")
+;; 			      ("35g1iaek8hramundse382il848@group.calendar.google.com" . "~/notes/cals/hyndlandrfc.org")))
+;; 	(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+;; 	(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+;; 	)
 
 
 (use-package multi-web-mode
@@ -407,6 +448,32 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(csv-separators (quote (";" "	")))
+ '(org-agenda-files
+   (quote
+    ("~/notes/bibliography/database.org" "/diary/2019.org" "/home/daniel/notes/research/2019-06-12.sync-conflict-20190621-111903-7BZV5KQ.org" "/home/daniel/notes/research/2019-06-20.sync-conflict-20190621-121904-LVGAVJD.org" "/home/daniel/notes/research/sitemap.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org" "/home/daniel/Notes/research/2019-08-28.org.gpg" "/home/daniel/Notes/research/2019-08-23.org")))
+ '(org-journal-carryover-items "TODO=\"TODO\"|TODO=\"TODAY\"|TODO=\"MERGE\"")
+ '(org-journal-dir "~/notes/research/")
+ '(org-journal-enable-agenda-integration t)
+ '(org-journal-enable-encryption t)
+ '(org-journal-encrypt-journal t)
+ '(org-journal-file-format "%Y-%m-%d.org")
+ '(org-journal-file-type (quote daily))
  '(package-selected-packages
    (quote
-    (workgroups epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))
+    (org-crypt epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))
+
+
+;;; Experimental Org-sync stuff
+
+;; (add-to-list 'load-path "~/.emacs.d/org-sync")
+;; (mapc 'load
+;;       '("org-sync" "org-sync-bb" "org-sync-github" "org-sync-redmine"))
+;; (setq org-sync-github-auth '("transientluantic" . "p3nr0ze12"))
+
+;; (add-to-list 'org-sync-backend-alist (cons "git.ligo.org" 'org-sync-gitlab-backend))
+
+
+  (setq calendar-and-diary-frame-parameters
+        '((name . "Calendar") (title . "Calendar")
+          (height . 20) (width . 78)
+          (minibuffer . t)))
