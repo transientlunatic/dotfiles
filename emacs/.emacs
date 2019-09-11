@@ -99,7 +99,7 @@
   :config
   (setq wg-prefix-key (kbd "C-c w"))
   (workgroups-mode 1)
-  (wg-load "~/.dotfiles/emacs/.emacs.d/workgroups")
+  ;(wg-load "~/.dotfiles/emacs/.emacs.d/workgroups")
   )
 
 ;;
@@ -360,21 +360,20 @@
   (global-set-key (kbd "C-x g") 'magit-status)
   )
 
-(setq package-check-signature nil)
-
-(use-package org-gcal
-  :ensure t
-  :config
-  (require 'secrets "~/.emacs.d/secrets.el.gpg")
-  (setq org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
-			      ("ct240d39oc9kq21cq3bn70jii8@group.calendar.google.com" . "~/notes/cals/international.org")
-			      ("2s2ausqn4j7g6bjhoth8vnrj0c@group.calendar.google.com". "~/notes/cals/calls.org")
-			      ("5vskop5jidv3vpo10gucv611s4eeau5f@import.calendar.google.com" . "~/notes/cals/pro14.org")
-			      ("q1v1coujord5pk00mdtdu6leuajqdclo@import.calendar.google.com" . "~/notes/cals/eprc.org")
-			      ("35g1iaek8hramundse382il848@group.calendar.google.com" . "~/notes/cals/hyndlandrfc.org")))
-	(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
-	(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
-	)
+;; (setq package-check-signature nil)
+;; (use-package org-gcal
+;;   :ensure t
+;;   :config
+;;   (require 'secrets "~/.emacs.d/secrets.el.gpg")
+;;   (setq org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
+;; 			      ("ct240d39oc9kq21cq3bn70jii8@group.calendar.google.com" . "~/notes/cals/international.org")
+;; 			      ("2s2ausqn4j7g6bjhoth8vnrj0c@group.calendar.google.com". "~/notes/cals/calls.org")
+;; 			      ("5vskop5jidv3vpo10gucv611s4eeau5f@import.calendar.google.com" . "~/notes/cals/pro14.org")
+;; 			      ("q1v1coujord5pk00mdtdu6leuajqdclo@import.calendar.google.com" . "~/notes/cals/eprc.org")
+;; 			      ("35g1iaek8hramundse382il848@group.calendar.google.com" . "~/notes/cals/hyndlandrfc.org")))
+;; 	(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+;; 	(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+;; 	)
 
 
 (use-package multi-web-mode
@@ -427,7 +426,7 @@
  '(csv-separators (quote (";" "	")))
  '(org-agenda-files
    (quote
-    ("~/thesis/chapters/sources/sources.org" "/diary/2019.org" "/home/daniel/notes/research/2019-01-08.org" "/home/daniel/notes/research/2019-01-09.org" "/home/daniel/notes/research/2019-01-15.org" "/home/daniel/notes/research/2019-01-16.org" "/home/daniel/notes/research/2019-03-11.org" "/home/daniel/notes/research/2019-03-12.org" "/home/daniel/notes/research/2019-03-13.org" "/home/daniel/notes/research/2019-03-18.org" "/home/daniel/notes/research/2019-03-19.org" "/home/daniel/notes/research/2019-03-20.org" "/home/daniel/notes/research/2019-03-25.org" "/home/daniel/notes/research/sitemap.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org")))
+    ("~/thesis/chapters/sources/sources.org" "/home/daniel/notes/research/sitemap.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org" "/home/daniel/notes/research/2019-09-23.org.gpg" "/home/daniel/notes/research/2019-09-10.org.gpg")))
  '(package-selected-packages
    (quote
     (ox-rst workgroups epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))
