@@ -47,16 +47,64 @@
   
   (setq org-default-notes-file (concat org-directory "/captures.org"))
   (setq org-agenda-files (list
-			  (concat org-directory "/diary/")
+					;(concat org-directory "/diary/")
 			  (concat org-directory "/projects/")
-			  (concat org-directory "/cals/google.org")
-			  (concat org-directory "/cals/international.org")
-			  (concat org-directory "/cals/pro14.org")
-			  (concat org-directory "/cals/eprc.org")
-			  (concat org-directory "/cals/hyndlandrfc.org") ))
+					;(concat org-directory "/cals/google.org")
+					;(concat org-directory "/cals/international.org")
+					;(concat org-directory "/cals/pro14.org")
+					;(concat org-directory "/cals/eprc.org")
+					;(concat org-directory "/cals/hyndlandrfc.org")
+			  ))
+
+  ;; Custom org-agenda layout
+  (defun air-org-skip-subtree-if-habit ()
+    "Skip an agenda entry if it has a STYLE property equal to \"habit\"."
+    (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+      (if (string= (org-entry-get nil "STYLE") "habit")
+	  subtree-end
+	nil)))
+  (defun air-org-skip-subtree-if-priority (priority)
+    "Skip an agenda subtree if it has a priority of PRIORITY.
+x
+PRIORITY may be one of the characters ?A, ?B, or ?C."
+    (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+	  (pri-value (* 1000 (- org-lowest-priority priority)))
+	  (pri-current (org-get-priority (thing-at-point 'line t))))
+      (if (= pri-value pri-current)
+	  subtree-end
+	nil)))
+
+  (setq org-agenda-custom-commands
+	'(("d" "Daily agenda and all TODOs"
+	   (
+	    (tags "PRIORITY=\"A\""
+		  ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
+		   (org-agenda-overriding-header "High-priority unfinished tasks:")))
+
+	    (tags-todo "TODAY"
+		       ((org-agenda-skip-function '(org-agenda-skip-if 'scheduled 'deadline)))
+		       (org-agenda-overriding-header "Tasks marked for today:"))
+	    
+	    (agenda "" ((org-agenda-ndays 1)))
+
+	    (alltodo ""
+		     ((org-agenda-skip-function '(or (air-org-skip-subtree-if-habit)
+						     (air-org-skip-subtree-if-priority ?A)
+						     ;(org-agenda-skip-if 'todo '("WAITING"))
+						     (org-agenda-skip-if nil '(scheduled deadline))))
+		      (org-agenda-overriding-header "ALL normal priority tasks:")))
+	   
+	    (tags-todo "WAITING"
+		       ((org-agenda-overriding-header "All tasks waiting:"))
+		       )
+	   
+	   )
+	   ((org-agenda-compact-blocks t)))))
+
+  
   ;; Org-mode workflow states
   (setq org-todo-keywords
-	'((sequence "TODO" "TODAY" "TEST" "REPORT" "MERGE" "|" "DONE" "DELEGATED")
+	'((sequence "TODO" "TODAY" "TEST" "REPORT" "MERGE" "WAITING" "|" "DONE" "DELEGATED")
 	  (sequence "TO READ" "MAKE NOTES" "REVIEW" "|" "READ")
 	  )
 	)
@@ -68,6 +116,9 @@
 	  ("TODAY" . (:weight bold
 			      :foreground "IndianRed2"
 			      :background "white"))
+	  ("WAITING" . (:weight bold
+				:foreground "orange"))
+				
 	  ("TEST" . (:weight bold
 			     :background "orange"
 			     :foreground "black"))
