@@ -6,6 +6,7 @@
 	gpgsign = true
 [http]
 	cookiefile = /tmp/ecpcookie.u5061
+	sslVerify = false
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f

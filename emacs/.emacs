@@ -129,8 +129,6 @@
              (setq org-tags-exclude-from-inheritance (quote ("crypt")))
              (setq org-crypt-key "D9787B13D139D6A2")
              (setq auto-save-default nil)
-
-	     
 	     )
 
 
