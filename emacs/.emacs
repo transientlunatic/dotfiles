@@ -2,7 +2,6 @@
 ;; load libraries
 ;;
 ;(load-library "find-lisp")
-(add-to-list 'load-path "~/.dotfiles/emacs/.emacs.d/mylisp/")
 
 ;;
 ;; Language and display customisations
@@ -23,26 +22,28 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Source Code Pro"))))
- '(org-block ((t (:inherit fixed-pitch))))
+ '(org-block ((t (:inherit variable-pitch))))
  '(org-document-info ((t (:foreground "dark orange"))))
  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
- '(org-document-title ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 2.0 :underline t))))
+ '(org-document-title ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond" :height 2.5))))
+ '(org-hide ((t (:foreground nil))))
  '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
- '(org-level-1 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.75))))
- '(org-level-2 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.5))))
- '(org-level-3 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.25))))
- '(org-level-4 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato" :height 1.1))))
- '(org-level-5 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
- '(org-level-6 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
- '(org-level-7 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
- '(org-level-8 ((t (:inherit default :weight normal :foreground "#bd93f9" :height 1.5 :font "Lato"))))
+ '(org-level-1 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond" :height 2.0 :weight bold))))
+ '(org-level-2 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond" :height 1.8 :slant italic))))
+ '(org-level-3 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond" :height 1.5 :slant italic))))
+ '(org-level-4 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond" :height 1.25 :slant italic))))
+ '(org-level-5 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond"))))
+ '(org-level-6 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond"))))
+ '(org-level-7 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond"))))
+ '(org-level-8 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond"))))
  '(org-link ((t (:foreground "royal blue" :underline t))))
  '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
  '(org-property-value ((t (:inherit fixed-pitch))) t)
  '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-table ((t (:inherit fixed-pitch :foreground "dark orange"))))
  '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.6))))
  '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
- '(variable-pitch ((t (:family "Lato" :height 150 :weight light)))))
+ '(variable-pitch ((t (:family "EB Garamond" :height 180 :weight light :foreground "#DDDDDD")))))
 
 
 ;;
@@ -121,19 +122,24 @@
 	     :init ;(add-hook 'org-mode-hook (lambda () (set-input-method "TeX")))
 		    (add-hook 'org-mode-hook 'visual-line-mode)
 		    (add-hook 'org-mode-hook 'flyspell-mode)
-	     :config
-	     ;; Custom font faces for orgmode
-	     (load "~/.dotfiles/emacs/.emacs.d/orgmode.el")
-	     (require 'org-crypt)
-             (org-crypt-use-before-save-magic)
-             (setq org-tags-exclude-from-inheritance (quote ("crypt")))
-             (setq org-crypt-key "D9787B13D139D6A2")
-             (setq auto-save-default nil)
-	     )
+		    (add-hook 'org-mode-hook 'variable-pitch-mode)
+		    (setq line-spacing 0.2)
+		    :config
+		     ;; Custom font faces for orgmode
+		     (load "~/.dotfiles/emacs/.emacs.d/orgmode.el")
+		     (load "~/.dotfiles/emacs/.emacs.d/orgmode-style.el")
+		     (require 'org-crypt)
+		     (org-crypt-use-before-save-magic)
+		     (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+		     (setq org-crypt-key "D9787B13D139D6A2")
+		     (setq auto-save-default nil)
+		     )
 
 
 
-
+(use-package neotree
+  :ensure t
+  )
 
 
 ;;
@@ -416,6 +422,37 @@
   (setq ledger-default-date-format "%Y-%m-%d")
   )
 
+;;; Autocompleation utilities
+(use-package company
+  :ensure t
+  :init (add-hook 'after-init-hook 'global-company-mode))
+(use-package company-jedi
+  :ensure t)
+
+;;; Python utilities
+(use-package jedi
+  :ensure t
+  :init (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t))
+
+(setq package-check-signature nil)
+(unless (and (eq package-check-signature 'allow-unsigned)
+             (eq (epg-signature-status sig) 'no-pubkey))
+  (setq had-fatal-error t))
+(use-package mmm-mode
+  :ensure t
+  :init (setq mmm-global-mode 'maybe)
+  (mmm-add-classes
+   '((python-rst
+    :submode rst-mode
+    :front "^ *[ru]?\"\"\"[^\"]*$"
+    :back "^ *\"\"\""
+    :include-front t
+    :include-back t
+    :end-not-begin t)))
+  (mmm-add-mode-ext-class 'python-mode nil 'python-rst)
+  )
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -425,6 +462,13 @@
  '(org-agenda-files
    (quote
     ("~/thesis/chapters/sources/sources.org" "/home/daniel/notes/research/sitemap.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org" "/home/daniel/notes/research/2019-09-23.org.gpg" "/home/daniel/notes/research/2019-09-10.org.gpg")))
+ '(org-journal-carryover-items "TODO=\"TODO\"|TODO=\"TODAY\"|TODO=\"MERGE\"")
+ '(org-journal-dir "~/notes/research/")
+ '(org-journal-enable-agenda-integration t)
+ '(org-journal-enable-encryption t)
+ '(org-journal-encrypt-journal t)
+ '(org-journal-file-format "%Y-%m-%d.org")
+ '(org-journal-file-type (quote daily))
  '(package-selected-packages
    (quote
-    (ox-rst workgroups epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))
+    (mmm-mode company-jedi company company-mode neotree ox-rst workgroups epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))

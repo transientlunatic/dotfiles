@@ -1,33 +1,33 @@
-(let* ((variable-tuple (cond ((x-list-fonts "Lato") '(:font "Lato"))
-			     ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-			     ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-			     ((x-list-fonts "Verdana")         '(:font "Verdana"))
-			     ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-			     (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-       (base-font-color     (face-foreground 'default nil 'default))
-       (headline           `(:inherit default :weight normal :foreground ,base-font-color :height 1.5)))
+;; (let* ((variable-tuple (cond ((x-list-fonts "Lato") '(:font "Lato"))
+;; 			     ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+;; 			     ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+;; 			     ((x-list-fonts "Verdana")         '(:font "Verdana"))
+;; 			     ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+;; 			     (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+;;        (base-font-color     (face-foreground 'default nil 'default))
+;;        (headline           `(:inherit default :weight normal :foreground ,base-font-color :height 1.5)))
 
-  (custom-theme-set-faces 'user
-			  '(variable-pitch ((t (:family "Lato" :height 150 :weight light))))
-			  `(org-level-8 ((t (,@headline ,@variable-tuple))))
-			  `(org-level-7 ((t (,@headline ,@variable-tuple))))
-			  `(org-level-6 ((t (,@headline ,@variable-tuple))))
-			  `(org-level-5 ((t (,@headline ,@variable-tuple))))
-			  `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-			  `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-			  `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-			  `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-			  '(org-block                 ((t (:inherit fixed-pitch))))
-			  '(org-document-info         ((t (:foreground "dark orange"))))
-			  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-			  '(org-link                  ((t (:foreground "royal blue" :underline t))))
-			  '(org-meta-line             ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-			  '(org-property-value        ((t (:inherit fixed-pitch))) t)
-			  '(org-special-keyword       ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-			  '(org-tag                   ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.6))))
-			  '(org-verbatim              ((t (:inherit (shadow fixed-pitch)))))
-			  '(org-indent                ((t (:inherit (org-hide fixed-pitch)))))
-			  `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline t))))))
+;;   (custom-theme-set-faces 'user
+;; 			  '(variable-pitch ((t (:family "Lato" :height 150 :weight light))))
+;; 			  `(org-level-8 ((t (,@headline ,@variable-tuple))))
+;; 			  `(org-level-7 ((t (,@headline ,@variable-tuple))))
+;; 			  `(org-level-6 ((t (,@headline ,@variable-tuple))))
+;; 			  `(org-level-5 ((t (,@headline ,@variable-tuple))))
+;; 			  `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+;; 			  `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+;; 			  `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+;; 			  `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+;; 			  '(org-block                 ((t (:inherit fixed-pitch))))
+;; 			  '(org-document-info         ((t (:foreground "dark orange"))))
+;; 			  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+;; 			  '(org-link                  ((t (:foreground "royal blue" :underline t))))
+;; 			  '(org-meta-line             ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+;; 			  '(org-property-value        ((t (:inherit fixed-pitch))) t)
+;; 			  '(org-special-keyword       ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+;; 			  '(org-tag                   ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.6))))
+;; 			  '(org-verbatim              ((t (:inherit (shadow fixed-pitch)))))
+;; 			  '(org-indent                ((t (:inherit (org-hide fixed-pitch)))))
+;; 			  `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline t))))))
 
 ;;; Various appearance tweaks
 (setq org-hide-emphasis-markers t) ; Hide markup markers
@@ -36,7 +36,8 @@
 ;;                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
 ; (add-hook 'org-mode-hook 'variable-pitch-mode)
-(add-hook 'org-mode-hook 'visual-line-mode)
+
+
 
 (progn
   (setq org-directory "~/notes")
@@ -170,11 +171,22 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
     (find-file glossary-file)
     (re-search-forward (format ":ABBREVIATION: %s" (upcase label)) nil t)
     )
+
+
+  (defun dw-cite-link-export (path desc backend)
+    (cond
+     ((eq 'html backend)
+      (format "<a href=\'%s\'>%s</a>" path path))
+     ((eq 'latex backend)
+      (format "\\cite{%s}" path))
+     ;; fall-through case for everything else
+     (t
+      path)))
   
   (org-link-set-parameters
    "cite"
    :follow (lambda (handle) (open-bibcodes handle))
-   )
+   :export 'dw-cite-link-export)
 
   (org-link-set-parameters
    "gls"
@@ -301,3 +313,15 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
                                         ("j" "Journal entry" entry (function org-journal-find-location)
                                          "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?")))
   )
+
+
+;; add new latex document classes
+
+;; (add-to-list 'org-latex-classes
+;;              '("tufte-handout"
+;;                "\\documentclass{tufte-handout}"
+;;                ("\\section{%s}" . "\\section*{%s}")
+;;                ("\\subsection{%s}" . "\\subsection*{%s}")
+;;                ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+;;                ("\\paragraph{%s}" . "\\paragraph*{%s}")
+;;                ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
