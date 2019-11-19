@@ -202,6 +202,9 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 	       ("^\\*+ \\(TODAY\\) "
 		(1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐")
 			  nil)))
+	       ("^\\*+ \\(WAITING\\) "
+		(1 (progn (compose-region (match-beginning 1) (match-end 1) "⌛")
+			  nil)))
 	       ("^\\*+ \\(TO READ\\) "
 		(1 (progn (compose-region (match-beginning 1) (match-end 1) "📖")
 			  nil)))
@@ -287,7 +290,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
   (org-journal-file-type 'daily)
   (org-journal-file-format "%Y-%m-%d.org")
   (org-journal-enable-agenda-integration t)
-  (org-journal-carryover-items "TODO=\"TODO\"|TODO=\"TODAY\"|TODO=\"MERGE\"")
+  (org-journal-carryover-items "TODO=\"TODO\"|TODO=\"TODAY\"|TODO=\"MERGE\"|TODO=\"WAITING\"")
   :config
   (defun org-journal-find-location ()
     ;; Open today's journal, but specify a non-nil prefix argument in order to
