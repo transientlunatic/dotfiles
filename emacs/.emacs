@@ -422,6 +422,14 @@
   (setq ledger-default-date-format "%Y-%m-%d")
   )
 
+;;; Project management
+
+(use-package projectile
+  :ensure t
+  :config
+  (setq projectile-project-search-path '("~/projects"))
+  )
+
 ;;; Autocompleation utilities
 (use-package company
   :ensure t
@@ -471,13 +479,13 @@
  '(org-agenda-files
    (quote
     ("~/thesis/chapters/sources/sources.org" "/home/daniel/notes/research/sitemap.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org" "/home/daniel/notes/research/2019-09-23.org.gpg" "/home/daniel/notes/research/2019-09-10.org.gpg")))
- '(org-journal-carryover-items "TODO=\"TODO\"|TODO=\"TODAY\"|TODO=\"MERGE\"" t)
- '(org-journal-dir "~/notes/research/" t)
- '(org-journal-enable-agenda-integration t t)
- '(org-journal-enable-encryption t t)
- '(org-journal-encrypt-journal t t)
- '(org-journal-file-format "%Y-%m-%d.org" t)
- '(org-journal-file-type (quote daily) t)
+ '(org-journal-carryover-items "TODO=\"TODO\"|TODO=\"TODAY\"|TODO=\"MERGE\"")
+ '(org-journal-dir "~/notes/research/")
+ '(org-journal-enable-agenda-integration t)
+ '(org-journal-enable-encryption t)
+ '(org-journal-encrypt-journal t)
+ '(org-journal-file-format "%Y-%m-%d.org")
+ '(org-journal-file-type (quote daily))
  '(package-selected-packages
    (quote
-    (elpy mmm-mode company-jedi company company-mode neotree ox-rst workgroups epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))
+    (org-chef projectile elpy mmm-mode company-jedi company company-mode neotree ox-rst workgroups epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))
