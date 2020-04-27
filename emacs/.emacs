@@ -2,7 +2,6 @@
 ;; load libraries
 ;;
 ;(load-library "find-lisp")
-;(add-to-list 'load-path "~/.emacs.d/")
 
 ;;
 ;; Language and display customisations
@@ -16,7 +15,34 @@
 (global-visual-line-mode t)
 
 ;;;;; Custom set faces
-
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Source Code Pro"))))
+ ;; '(org-block ((t (:inherit variable-pitch))))
+ ;; '(org-document-info ((t (:foreground "dark orange"))))
+ ;; '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ ;; '(org-document-title ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond" :height 2.5))))
+ ;; '(org-hide ((t (:foreground nil))))
+ ;; '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ ;; '(org-level-1 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond" :height 2.0 :weight bold))))
+ ;; '(org-level-2 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond" :height 1.8 :slant italic))))
+ ;; '(org-level-3 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond" :height 1.5 :slant italic))))
+ ;; '(org-level-4 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond" :height 1.25 :slant italic))))
+ ;; '(org-level-5 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond"))))
+ ;; '(org-level-6 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond"))))
+ ;; '(org-level-7 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond"))))
+ ;; '(org-level-8 ((t (:inherit default :weight normal :foreground "#f8f8f2" :height 1.5 :font "EB Garamond"))))
+ ;; '(org-link ((t (:foreground "royal blue" :underline t))))
+ ;; '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ ;; '(org-property-value ((t (:inherit fixed-pitch))) t)
+ ;; '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ ;; '(org-table ((t (:inherit fixed-pitch :foreground "dark orange"))))
+ ;; '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.6))))
+ ;; '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
+ '(variable-pitch ((t (:family "EB Garamond" :height 180 :weight light :foreground "#DDDDDD")))))
 
 
 ;;
@@ -69,7 +95,11 @@
   
 (use-package workgroups
   :ensure t
-  :init   (workgroups-mode 1)
+  :diminish workgroups-mode
+  :config
+  (setq wg-prefix-key (kbd "C-c w"))
+  (workgroups-mode 1)
+  ;(wg-load "~/.dotfiles/emacs/.emacs.d/workgroups")
   )
 
 ;;
@@ -88,218 +118,29 @@
 		    ("C-c C-x C-o" . org-clock-out)
 		    ("C-c C-x C-b" . org-bibtex-yank)
 		    )
-	     :init (add-hook 'org-mode-hook (lambda () (set-input-method "TeX")))
-	     :config
-	     ;; Custom font faces for orgmode
-	     (let* ((variable-tuple (cond ((x-list-fonts "Raleway") '(:font "Raleway"))
-					  ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-					  ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-					  ((x-list-fonts "Verdana")         '(:font "Verdana"))
-					  ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-					  (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-		    (base-font-color     (face-foreground 'default nil 'default))
-		    (headline           `(:inherit default :weight normal :foreground ,base-font-color :height 1.5)))
-
-	       (custom-theme-set-faces 'user
-				       `(org-level-8 ((t (,@headline ,@variable-tuple))))
-				       `(org-level-7 ((t (,@headline ,@variable-tuple))))
-				       `(org-level-6 ((t (,@headline ,@variable-tuple))))
-				       `(org-level-5 ((t (,@headline ,@variable-tuple))))
-				       `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-				       `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-				       `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-				       `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-				       `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
-
-	     
-	     (progn
-	       (setq org-directory "~/notes")
-	       (setq project-directory (concat org-directory "/projects"))
-
-	       (setq org-startup-with-inline-images t)
-	       (setq org-image-actual-width nil)
-	       
-	       (setq org-default-notes-file (concat org-directory "/captures.org"))
-	       (setq org-agenda-files (list
-				       (concat org-directory "/diary/")
-				       (concat org-directory "/projects/")
-				       (concat org-directory "/cals/google.org")
-				       (concat org-directory "/cals/international.org")
-				       (concat org-directory "/cals/pro14.org")
-				       (concat org-directory "/cals/eprc.org")
-				       (concat org-directory "/cals/hyndlandrfc.org") ))
-	       ;; Org-mode workflow states
-	       (setq org-todo-keywords
-		     '((sequence "TODO" "TODAY" "TEST" "REPORT" "MERGE" "|" "DONE" "DELEGATED")
-		       (sequence "TO READ" "MAKE NOTES" "REVIEW" "|" "READ")
-		       )
-		     )
-	       ;; Set Org TODO Faces
-	       (setq org-todo-keyword-faces
-		     '(("TODO" . (:weight bold
-				  :foreground "firebrick"))
-		       
-		       ("TODAY" . (:weight bold
-				   :foreground "IndianRed2"
-				   :background "white"))
-		       ("TEST" . (:weight bold
-				  :background "orange"
-				  :foreground "black"))
-		       ("REPORT" . (:weight bold :background "thistle" :foreground "black"))
-		       ("STARTED" . "yellow")
-		       ("TO READ" . (:weight bold :background "DarkOrchid" :foreground "white"))
-		       ("MAKE NOTES" . (:weight bold :background "thistle" :foreground "black"))
-		       ("HABIT" . (:weight bold :background "DeepPink" :foreground "white"))
-		       ("CANCELED" . (:foreground "light grey" :weight bold)))
+	     :init ;(add-hook 'org-mode-hook (lambda () (set-input-method "TeX")))
+		    (add-hook 'org-mode-hook 'visual-line-mode)
+		    (add-hook 'org-mode-hook 'flyspell-mode)
+		    (add-hook 'org-mode-hook 'variable-pitch-mode)
+		    (setq line-spacing 0.2)
+		    :config
+		     ;; Custom font faces for orgmode
+		     (load "~/.dotfiles/emacs/.emacs.d/orgmode.el")
+		     (load "~/.dotfiles/emacs/.emacs.d/orgmode-style.el")
+		     (require 'org-crypt)
+		     (org-crypt-use-before-save-magic)
+		     (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+		     (setq org-crypt-key "D9787B13D139D6A2")
+		     (setq auto-save-default nil)
 		     )
 
 
-	       (org-link-set-parameters
-		"dcc"
-		:follow (lambda (handle)(browse-url (concat "https://dcc.ligo.org/LIGO-" handle)))
-		)
 
-
-	       (defun split-bibcode (handle)
-		 "Split a link containing multiple bibcodes and return just the first one."
-		 (interactive "sBibcode: ")
-		 (setq bibcode-list (split-string handle ","))
-		 (pop bibcode-list))
-
-	       (defun open-bibcodes (handle)
-		 "Open a bibcode link, potentially with several references."
-		 (setq bibcode-list (split-string handle ","))
-		 (dolist (bibcode bibcode-list)
-		   (browse-url
-		    (concat "https://ui.adsabs.harvard.edu/#abs/" bibcode "/abstract"))))
-
-
-					; glossary links
-	       (setq glossary-file "/home/daniel/thesis/chapters/glossary/glossary.org")
-	       (defun follow-abb-link (label)
-		 "Follow an abbreviation link to a label LABEL."
-		 (interactive "sLabel: ")
-		 (find-file glossary-file)
-		 (re-search-forward (format ":ABBREVIATION: %s" (upcase label)) nil t)
-		 )
-	       
-	       (org-link-set-parameters
-		"cite"
-		:follow (lambda (handle) (open-bibcodes handle))
-		)
-
-	       (org-link-set-parameters
-		"gls"
-		:face '(:foreground "orange")
-		:follow (lambda (handle)(find-file glossary-file))
-		)
-	       (org-link-set-parameters
-		"abb"
-		:face '(:foreground "orange")
-		:export (lambda (handle desc backend)
-			  (cond
-			   ((eq 'html backend)
-			    (format "<a href=\"glossary.html#%s\">%s</a>" handle (or desc (upcase handle))))))
-		:follow (lambda (handle)(follow-abb-link handle))
-		)
-		
-
-	       
-	       	       
-	       (font-lock-add-keywords            ; A bit silly but my headers are now
-		'org-mode `(("^\\*+ \\(TODO\\) "  ; shorter, and that is nice canceled
-			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚑")
-				       nil)))
-			    ("^\\*+ \\(TODAY\\) "
-			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "⚐")
-				       nil)))
-			    ("^\\*+ \\(TO READ\\) "
-			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "📖")
-				       nil)))
-			    ("^\\*+ \\(CANCELED\\) "
-			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "✘")
-				       nil)))
-			    ("^\\*+ \\(GOAL\\) "
-			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "★")
-				       nil)))
-			    ("^\\*+ \\(DONE\\) "
-			     (1 (progn (compose-region (match-beginning 1) (match-end 1) "✔")
-				       nil)))))
-
-
-	       
-	       ;; Set Org TAG Faces
-	       (setq org-tag-faces
-		     '( ("minke" . (:background "LightSlateBlue" :foreground "white"))
-			("telecon" . (:background "Blue" :foreground "white"))
-			("embargoed" . (:background "red" :foreground "white"))
-		       ))
-	       
-	       ;; Capture templates
-	       (setq org-capture-templates
-		     '(
-		       
-		       ("g" "Glossary" entry (file+olp (concat org-directory "/glossary.org") "Glossary")
-			"* %^{Term}\n :PROPERTIES:\n :abbreviation: %^{tag}\n :END:\n %?\n" :kill-buffer t)
-		       
-		       ("w" "Web site" entry (file+olp (concat org-directory "/capture.org") "Website" )
-			"* %c :website:\n%U %?%:initial" :kill-buffer t)
-		       
-		       )
-		     )
-	       ;; Org HTML
-	       (setq org-publish-project-alist
-		     '(("org-notes"
-			:base-directory "~/notes/"
-			:publishing-directory "~/www/org/"
-			:publishing-function org-twbs-publish-to-html
-			:with-sub-superscript nil
-			)
-
-		       )
-		     )
-		 
-	       ;; Org smart-quotes
-	       (setq org-export-with-smart-quotes t)
-
-	       ;; Org export css
-	       (setq org-export-htmlize-output-type 'css)
-	       
-	       ;; Org babel
-	       
-	       (org-babel-do-load-languages
-		'org-babel-load-languages
-		'((emacs-lisp . t)
-		  (python . t)
-		  ;(ipython . t)
-		  (ditaa . t)
-		  (dot . t)
-		  (gnuplot . t)
-		  (org . t)
-		  (latex . t)))
-
-
-	       )
-
-	     
-	     )
-
-;;
-;; Org journal
-;;
-
-(use-package org-journal
+(use-package neotree
   :ensure t
-  :bind (("C-c C-#" . org-journal-new-entry)
-	 )
-  :commands org-journal-mode
-  :after (org)
-  :config
-  (progn
-    (setq org-journal-dir "~/notes/research/"
-	  org-journal-file-format "%Y-%m-%d.org")
-    )
   )
+
+
 ;;
 ;; Org ref
 ;;
@@ -522,21 +363,20 @@
   (global-set-key (kbd "C-x g") 'magit-status)
   )
 
-(setq package-check-signature nil)
-
-(use-package org-gcal
-  :ensure t
-  :config
-  (require 'secrets "~/.emacs.d/secrets.el.gpg")
-  (setq org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
-			      ("ct240d39oc9kq21cq3bn70jii8@group.calendar.google.com" . "~/notes/cals/international.org")
-			      ("2s2ausqn4j7g6bjhoth8vnrj0c@group.calendar.google.com". "~/notes/cals/calls.org")
-			      ("5vskop5jidv3vpo10gucv611s4eeau5f@import.calendar.google.com" . "~/notes/cals/pro14.org")
-			      ("q1v1coujord5pk00mdtdu6leuajqdclo@import.calendar.google.com" . "~/notes/cals/eprc.org")
-			      ("35g1iaek8hramundse382il848@group.calendar.google.com" . "~/notes/cals/hyndlandrfc.org")))
-	(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
-	(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
-	)
+;; (setq package-check-signature nil)
+;; (use-package org-gcal
+;;   :ensure t
+;;   :config
+;;   (require 'secrets "~/.emacs.d/secrets.el.gpg")
+;;   (setq org-gcal-file-alist '(("pulsar.co.nr@gmail.com" . "~/notes/cals/google.org")
+;; 			      ("ct240d39oc9kq21cq3bn70jii8@group.calendar.google.com" . "~/notes/cals/international.org")
+;; 			      ("2s2ausqn4j7g6bjhoth8vnrj0c@group.calendar.google.com". "~/notes/cals/calls.org")
+;; 			      ("5vskop5jidv3vpo10gucv611s4eeau5f@import.calendar.google.com" . "~/notes/cals/pro14.org")
+;; 			      ("q1v1coujord5pk00mdtdu6leuajqdclo@import.calendar.google.com" . "~/notes/cals/eprc.org")
+;; 			      ("35g1iaek8hramundse382il848@group.calendar.google.com" . "~/notes/cals/hyndlandrfc.org")))
+;; 	(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+;; 	(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
+;; 	)
 
 
 (use-package multi-web-mode
@@ -574,13 +414,66 @@
   ;;        (before-save . tide-format-before-save))
 )
 
+(use-package ledger-mode
+  :ensure f
+  :config
+  (setq ledger-use-iso-dates t)
+  (setq ledger-default-date-format "%Y-%m-%d")
+  )
 
+;;; Project management
+
+(use-package projectile
+  :ensure t
+  :config
+  (setq projectile-project-search-path '("~/projects"))
+  )
+
+;;; Autocompleation utilities
+(use-package company
+  :ensure t
+  :init (add-hook 'after-init-hook 'global-company-mode))
+(use-package company-jedi
+  :ensure t)
+
+;;; Python utilities
+(use-package jedi
+  :ensure t
+  :init (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t))
+
+(use-package elpy
+  :ensure t
+  :init (add-hook 'python-mode-hook 'elpy-mode))
+
+(use-package flycheck
+  :ensure t
+  :init (add-hook 'python-mode-hook 'flycheck-mode))
+
+(setq package-check-signature nil)
+(unless (and (eq package-check-signature 'allow-unsigned)
+             (eq (epg-signature-status sig) 'no-pubkey))
+  (setq had-fatal-error t))
+(use-package mmm-mode
+  :ensure t
+  :init (setq mmm-global-mode 'maybe)
+  (mmm-add-classes
+   '((python-rst
+    :submode rst-mode
+    :front "^ *[ru]?\"\"\"[^\"]*$"
+    :back "^ *\"\"\""
+    :include-front t
+    :include-back t
+    :end-not-begin t)))
+  (mmm-add-mode-ext-class 'python-mode nil 'python-rst)
+  )
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+
  '(ansi-color-names-vector
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(custom-safe-themes
@@ -594,4 +487,35 @@
  '(package-selected-packages
    (quote
     (markdown-mode workgroups tide yaml-mode wanderlust virtualenv use-package-el-get spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dockerfile-mode diminish cdlatex auto-virtualenvwrapper)))
- '(safe-local-variable-values (quote ((org-emphasis-alist)))))
+ '(safe-local-variable-values (quote ((org-emphasis-alist))))
+
+ '(csv-separators (quote (";" "	")))
+ '(line-number-mode nil)
+ '(org-agenda-files
+   (quote
+    ("~/thesis/chapters/sources/sources.org" "/home/daniel/notes/research/sitemap.org" "/home/daniel/notes/projects/Burst_MDC.org" "/home/daniel/notes/projects/O2BurstMDC.org" "/home/daniel/notes/projects/acreroad.org" "/home/daniel/notes/projects/armadillo.org" "/home/daniel/notes/projects/grbeaming.org" "/home/daniel/notes/projects/heron.org" "/home/daniel/notes/projects/minke.org" "/home/daniel/notes/projects/outreach.org" "/home/daniel/notes/projects/pydv.org" "/home/daniel/notes/projects/reddit-ama.org" "/home/daniel/notes/projects/salamander.org" "/home/daniel/notes/projects/sitemap.org" "/home/daniel/notes/projects/thesis.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org" "/home/daniel/notes/research/2019-09-23.org.gpg" "/home/daniel/notes/research/2019-09-10.org.gpg")))
+ '(org-journal-carryover-items "TODO=\"TODO\"|TODO=\"TODAY\"|TODO=\"MERGE\"")
+ '(org-journal-dir "~/notes/research/")
+ '(org-journal-enable-agenda-integration t)
+ '(org-journal-enable-encryption t)
+ '(org-journal-encrypt-journal t)
+ '(org-journal-file-format "%Y-%m-%d.org")
+ '(org-journal-file-type (quote daily))
+ '(package-selected-packages
+   (quote
+    (ox-tufte ox-rst workgroups epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))
+
+;; Configure flymake for Python
+(when (load "flymake" t)
+  (defun flymake-pylint-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))
+      (list "epylint" (list local-file))))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.py\\'" flymake-pylint-init)))
+
+;; Set as a minor mode for Python
+(add-hook 'python-mode-hook '(lambda () (flymake-mode)))
