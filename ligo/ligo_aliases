@@ -1,6 +1,6 @@
 LIGO_USER=$(lookup_pass_variable user websites/ligo.org)
 alias ldg-init="ligo-proxy-init $LIGO_USER"
-GSISSH=gsissh
+GSISSH=ssh # gsissh
 GSISCP=$(which gsiscp)
 
 function title {
@@ -33,7 +33,8 @@ function get_ldg_url {
     
 function ldg_grid {
     url=$(get_ldg_url "$1" "$2")
-    $(title "[$1]") && $GSISSH $LIGO_USER@$url && $(title "Terminal")
+
+    $(title "[$1]") && $GSISSH ${LIGO_USER}@$url && $(title "Terminal")
 };
 
 function ldg_scp {
