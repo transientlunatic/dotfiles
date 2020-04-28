@@ -1,48 +1,18 @@
-;; (let* ((variable-tuple (cond ((x-list-fonts "Lato") '(:font "Lato"))
-;; 			     ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-;; 			     ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-;; 			     ((x-list-fonts "Verdana")         '(:font "Verdana"))
-;; 			     ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-;; 			     (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-;;        (base-font-color     (face-foreground 'default nil 'default))
-;;        (headline           `(:inherit default :weight normal :foreground ,base-font-color :height 1.5)))
 
-;;   (custom-theme-set-faces 'user
-;; 			  '(variable-pitch ((t (:family "Lato" :height 150 :weight light))))
-;; 			  `(org-level-8 ((t (,@headline ,@variable-tuple))))
-;; 			  `(org-level-7 ((t (,@headline ,@variable-tuple))))
-;; 			  `(org-level-6 ((t (,@headline ,@variable-tuple))))
-;; 			  `(org-level-5 ((t (,@headline ,@variable-tuple))))
-;; 			  `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-;; 			  `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-;; 			  `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-;; 			  `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-;; 			  '(org-block                 ((t (:inherit fixed-pitch))))
-;; 			  '(org-document-info         ((t (:foreground "dark orange"))))
-;; 			  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-;; 			  '(org-link                  ((t (:foreground "royal blue" :underline t))))
-;; 			  '(org-meta-line             ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-;; 			  '(org-property-value        ((t (:inherit fixed-pitch))) t)
-;; 			  '(org-special-keyword       ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-;; 			  '(org-tag                   ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.6))))
-;; 			  '(org-verbatim              ((t (:inherit (shadow fixed-pitch)))))
-;; 			  '(org-indent                ((t (:inherit (org-hide fixed-pitch)))))
-;; 			  `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline t))))))
-
-;;; Various appearance tweaks
-(setq org-hide-emphasis-markers t) ; Hide markup markers
-;; (font-lock-add-keywords 'org-mode  ; Replace bullet points
-;;                         '(("^ *\\([-+]\\) "
-;;                            (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-
-; (add-hook 'org-mode-hook 'variable-pitch-mode)
 
 
 
 (progn
+
+  (setq org-crypt-key "mail@daniel-williams.co.uk")
+  (setq auto-save-default nil)
+
+
   (setq org-directory "~/notes")
   (setq project-directory (concat org-directory "/projects"))
 
+  (setq org-hide-emphasis-markers t) ; Hide markup markers
+  
   (setq org-startup-with-inline-images t)
   (setq org-image-actual-width nil)
   
@@ -285,37 +255,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 
   )
 
-;;
-;; Org journal
-;;
 
-(use-package org-journal
-  :ensure t
-  :bind (("C-c C-#" . org-journal-new-entry)
-         )
-  :commands org-journal-mode
-  :after (org)
-  :custom
-  (org-journal-encrypt-journal t)
-  (org-journal-enable-encryption t)
-  (org-journal-dir "~/notes/research/")
-  (org-journal-file-type 'daily)
-  (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-enable-agenda-integration t)
-  (org-journal-carryover-items "TODO=\"TODO\"|TODO=\"TODAY\"|TODO=\"MERGE\"|TODO=\"WAITING\"")
-  :config
-  (defun org-journal-find-location ()
-    ;; Open today's journal, but specify a non-nil prefix argument in order to
-    ;; inhibit inserting the heading; org-capture will insert the heading.
-    (org-journal-new-entry t)
-    ;; Position point on the journal's top-level heading so that org-capture
-    ;; will add the new entry as a child entry.
-    (goto-char (point-min)))
-  
-  (add-to-list 'org-capture-templates '(
-                                        ("j" "Journal entry" entry (function org-journal-find-location)
-                                         "** %(format-time-string org-journal-time-format)%^{Title}\n%i%?")))
-  )
 
 
 ;; add new latex document classes
