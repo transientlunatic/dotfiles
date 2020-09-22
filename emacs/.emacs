@@ -19,14 +19,15 @@
 ;;
 
 (require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.org/packages/")
-	     '("org" . "http://orgmode.org/elpa/")
-	     )
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives '("milkbox" . "http://melpa.milkbox.net/packages/") t)
+
 (setq package-archive-priorities '(("org" . 4)
+				   ("melpa-stable" . 2)
 				   ("milkbox" . 1)
-                                   ("melpa" . 2)))
+                                   ("melpa" . 3)))
 (package-initialize)
 
 
@@ -57,6 +58,8 @@
   (auto-package-update-maybe))
 
 
+(add-to-list 'load-path "~/.emacs.d/vendor/emacs-powerline")
+(require 'powerline)
 
 ;;
 ;; Load dracula theme
@@ -111,6 +114,7 @@
 					;(load "~/.dotfiles/emacs/.emacs.d/orgmode-style.el")
 	     )
 (load "~/.dotfiles/emacs/.emacs.d/orgmode-extras.el")
+(load "~/.dotfiles/emacs/.emacs.d/orgjournal.el")
 
 
 
@@ -123,6 +127,7 @@
 (use-package magit
   :ensure t
   :commands magit-status
+  :pin melpa-stable
   :config
   (global-set-key (kbd "C-x g") 'magit-status)
   )
@@ -163,6 +168,9 @@
   :ensure t
   :config
   (setq projectile-project-search-path '("~/projects"))
+  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1)
   )
 
 
@@ -201,7 +209,11 @@
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
    (quote
-    ("~/notes/research/2020-04-27.org.gpg" "/home/daniel/notes/projects/current.org" "/home/daniel/notes/projects/reddit-ama.org"))))
+    ("~/notes/meetings/ligo.org" "~/notes/students/weichangfeng.org" "~/notes/meetings/igr-grant.org" "~/notes/meetings/igr-group.org" "/home/daniel/repositories/rugby/notes.org" "/home/daniel/repositories/heron/notes.org" "/home/daniel/.dotfiles/notes.org" "/home/daniel/repositories/asimov/notes.org" "/home/daniel/repositories/ligo/gw-infographic/notes.org" "~/notes/todo.org")))
+ '(package-selected-packages
+   (quote
+    (magit helm-projectile org-projectile json-mode jupyter dockerfile-mode minimap auctex-latexmk auctex yaml-mode markdown-mode workgroups use-package-hydra use-package-ensure-system-package use-package-el-get use-package-chords tide projectile ox-twiki ox-twbs org-protocol-jekyll org-journal-list org-journal org-bullets org-ac neotree multi-web-mode mmm-mode ledger-mode jedi f elpy dracula-theme diminish company-jedi bind-map auto-package-update)))
+ '(projectile-mode t nil (projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

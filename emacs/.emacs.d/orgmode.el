@@ -1,10 +1,6 @@
-
-
-
-
 (progn
 
-  (setq org-crypt-key "mail@daniel-williams.co.uk")
+  ;(setq org-crypt-key "mail@daniel-williams.co.uk")
   (setq auto-save-default nil)
 
 
@@ -18,14 +14,14 @@
   
   (setq org-default-notes-file (concat org-directory "/captures.org"))
   (setq org-agenda-files (list
-					;(concat org-directory "/diary/")
-			  (concat org-directory "/projects/")
-					;(concat org-directory "/cals/google.org")
-					;(concat org-directory "/cals/international.org")
-					;(concat org-directory "/cals/pro14.org")
-					;(concat org-directory "/cals/eprc.org")
-					;(concat org-directory "/cals/hyndlandrfc.org")
-			  ))
+  					;(concat org-directory "/diary/")
+  			  ;(concat org-directory "/projects/*/notes.org")
+  					;(concat org-directory "/cals/google.org")
+  					;(concat org-directory "/cals/international.org")
+  					;(concat org-directory "/cals/pro14.org")
+  					;(concat org-directory "/cals/eprc.org")
+  					;(concat org-directory "/cals/hyndlandrfc.org")
+  			  ))
 
   ;; Custom org-agenda layout
   (defun air-org-skip-subtree-if-habit ()
@@ -52,9 +48,15 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 		  ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo 'done))
 		   (org-agenda-overriding-header "High-priority unfinished tasks:")))
 
-	    (tags-todo "TODAY"
-		       ((org-agenda-skip-function '(org-agenda-skip-if 'scheduled 'deadline)))
-		       (org-agenda-overriding-header "Tasks marked for today:"))
+	    (todo "TODAY")
+		       ;((org-agenda-skip-function '(org-agenda-skip-if 'scheduled 'deadline)))
+		       ;(org-agenda-overriding-header "Tasks marked for today:"))
+	    (todo "DOING")
+		       ;((org-agenda-skip-function '(org-agenda-skip-if 'scheduled 'deadline)))
+		       ;(org-agenda-overriding-header "Tasks in process:"))
+	    (todo "WAITING"
+		       ((org-agenda-overriding-header "All tasks waiting:"))
+		       )
 	    
 	    (agenda "" ((org-agenda-ndays 1)))
 
@@ -65,9 +67,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
 						     (org-agenda-skip-if nil '(scheduled deadline))))
 		      (org-agenda-overriding-header "ALL normal priority tasks:")))
 	   
-	    (tags-todo "WAITING"
-		       ((org-agenda-overriding-header "All tasks waiting:"))
-		       )
+
 	   
 	   )
 	   ((org-agenda-compact-blocks t)))))
@@ -75,7 +75,7 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
   
   ;; Org-mode workflow states
   (setq org-todo-keywords
-	'((sequence "TODO" "TODAY" "TEST" "REPORT" "MERGE" "WAITING" "|" "DONE" "DELEGATED")
+	'((sequence "TODO" "DOING" "TODAY" "TEST" "REPORT" "MERGE" "WAITING" "|" "DONE" "DELEGATED")
 	  (sequence "TO READ" "MAKE NOTES" "REVIEW" "|" "READ")
 	  )
 	)
@@ -83,7 +83,9 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
   (setq org-todo-keyword-faces
 	'(("TODO" . (:weight bold
 			     :foreground "firebrick"))
-	  
+	  ("DOING" . (:weight bold
+			      :foreground "IndianRed2"
+			      :background "white"))	  
 	  ("TODAY" . (:weight bold
 			      :foreground "IndianRed2"
 			      :background "white"))
@@ -256,7 +258,27 @@ PRIORITY may be one of the characters ?A, ?B, or ?C."
   )
 
 
+(defun imalison:add-to-org-agenda-files (incoming-files)
+  (setq org-agenda-files
+        (delete-dups
+         (cl-loop for filepath in (append org-agenda-files incoming-files)
+                  when (and filepath (file-exists-p (file-truename filepath)))
+                  collect (file-truename filepath)))))
 
+(use-package org-projectile
+  :bind (("C-c n p" . org-projectile-project-todo-completing-read)
+         ("C-c c" . org-capture))
+  :config
+  (progn
+    (org-projectile-per-project)
+    (setq org-projectile-per-project-filepath "notes.org")
+    (imalison:add-to-org-agenda-files (org-projectile-todo-files))
+    ;(setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+    (push (org-projectile-project-todo-entry) org-capture-templates))
+  :ensure t)
+
+
+(append org-agenda-files (concat org-directory "/todo.org"))
 
 ;; add new latex document classes
 

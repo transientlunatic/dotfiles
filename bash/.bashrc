@@ -161,7 +161,7 @@ export NVM_DIR="$HOME/.nvm"
 source ~/.dotfiles/docker/docker.sh
 
 # Use your slr as a webcam
-alias slrwebcam='gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video1'
+alias slrwebcam='gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video2'
 
 
 source "/etc/profile.d/rvm.sh"
