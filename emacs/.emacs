@@ -188,6 +188,27 @@
              (eq (epg-signature-status sig) 'no-pubkey))
   (setq had-fatal-error t))
 
+;; (custom-set-variables
+;;  ;; custom-set-variables was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(csv-separators (quote (";" "	")))
+;;  '(line-number-mode nil)
+;;  '(org-agenda-files
+;;    (quote
+;;     ("~/thesis/chapters/sources/sources.org" "/home/daniel/notes/research/sitemap.org" "/home/daniel/notes/projects/reddit-ama.org" "~/notes/cals/google.org" "~/notes/cals/international.org" "~/notes/cals/pro14.org" "~/notes/cals/eprc.org" "~/notes/cals/hyndlandrfc.org" "/home/daniel/notes/research/2020-04-20.org.gpg")))
+;;  '(org-journal-carryover-items "TODO=\"TODO\"|TODO=\"TODAY\"|TODO=\"MERGE\"")
+;;  '(org-journal-dir "~/notes/research/")
+;;  '(org-journal-enable-agenda-integration t)
+;;  '(org-journal-enable-encryption t)
+;;  '(org-journal-encrypt-journal t)
+;;  '(org-journal-file-format "%Y-%m-%d.org")
+;;  '(org-journal-file-type (quote daily))
+;;  '(package-selected-packages
+;;    (quote
+;;     (ox-tufte ox-rst workgroups epa-file yaml-mode wanderlust virtualenv use-package-el-get tide spaceline-all-the-icons rainbow-mode pass pandoc-mode ox-twiki ox-twbs ox-latex-chinese org2jekyll org-wiki org-time-budgets org-sync org-ref org-protocol-jekyll org-journal org-jekyll org-gcal org-edit-latex org-easy-img-insert org-download org-dashboard org-caldav org-bullets org-ac ob-ipython ob-browser multi-web-mode markdown-edit-indirect magit ledger-mode latex-extra json-mode jedi helm-bibtexkey gitlab gist ein dracula-theme dockerfile-mode diminish csv-mode cdlatex auto-virtualenvwrapper))))
+
 ;; Configure flymake for Python
 (when (load "flymake" t)
   (defun flymake-pylint-init ()

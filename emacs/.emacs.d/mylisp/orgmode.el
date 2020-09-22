@@ -1,37 +1,5 @@
-(let* ((variable-tuple (cond ((x-list-fonts "Lato") '(:font "Lato"))
-			     ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-			     ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-			     ((x-list-fonts "Verdana")         '(:font "Verdana"))
-			     ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-			     (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-       (base-font-color     (face-foreground 'default nil 'default))
-       
-       (headline           `(:inherit default
-				      :weight normal
-				      :foreground "#bd93f9";,base-font-color
-				      :height 1.5)))
 
-  (custom-theme-set-faces 'user
-			  '(variable-pitch ((t (:family "Lato" :height 150 :weight light))))
-			  `(org-level-8 ((t (,@headline ,@variable-tuple))))
-			  `(org-level-7 ((t (,@headline ,@variable-tuple))))
-			  `(org-level-6 ((t (,@headline ,@variable-tuple))))
-			  `(org-level-5 ((t (,@headline ,@variable-tuple))))
-			  `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-			  `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-			  `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-			  `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-			  '(org-block                 ((t (:inherit fixed-pitch))))
-			  '(org-document-info         ((t (:foreground "dark orange"))))
-			  '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-			  '(org-link                  ((t (:foreground "royal blue" :underline t))))
-			  '(org-meta-line             ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-			  '(org-property-value        ((t (:inherit fixed-pitch))) t)
-			  '(org-special-keyword       ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-			  '(org-tag                   ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.6))))
-			  '(org-verbatim              ((t (:inherit (shadow fixed-pitch)))))
-			  '(org-indent                ((t (:inherit (org-hide fixed-pitch)))))
-			  `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline t))))))
+
 
 ;;; Various appearance tweaks
 (setq org-hide-emphasis-markers t) ; Hide markup markers
@@ -96,6 +64,8 @@
   (add-to-list 'org-latex-packages-alist
 	       '("" "tikz" t))
 
+  (setq org-latex-prefer-user-labels t)
+  
   (eval-after-load "preview"
     '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t))
 
@@ -139,8 +109,28 @@
 
   (org-link-set-parameters
    "gls"
-   :face '(:foreground "orange")
+   :face '(:foreground "#AA6E39")
    :follow (lambda (handle)(find-file glossary-file))
+   )
+  (org-link-set-parameters
+   "Gls"
+   :face '(:foreground "#AA6E39")
+   :follow (lambda (handle)(find-file glossary-file))
+   )
+  (org-link-set-parameters
+   "glspl"
+   :face '(:foreground "#AA6E39")
+   :follow (lambda (handle)(find-file glossary-file))
+   )
+  (org-link-set-parameters
+   "Glspl"
+   :face '(:foreground "#AA6E39")
+   :follow (lambda (handle)(find-file glossary-file))
+   )
+  (org-link-set-parameters
+   "ref"
+   :face '(:foreground "#AA3939")
+   ; :follow (lambda (handle)(find-file glossary-file))
    )
   (org-link-set-parameters
    "abb"
@@ -153,7 +143,7 @@
    )
   (org-link-set-parameters
    "abbr"
-   :face '(:foreground "orange" :underline t)
+   :face '(:foreground "#AA6E39" :underline f)
    :export (lambda (handle desc backend)
 	     (cond
 	      ((eq 'html backend)
@@ -170,8 +160,6 @@
    :follow (lambda (handle)(follow-abb-link handle))
    )
   
-
-
   ;;; TODO List symbols
   
   (font-lock-add-keywords            ; A bit silly but my headers are now
@@ -227,11 +215,8 @@
   
   ;; Org smart-quotes
   (setq org-export-with-smart-quotes t)
-
   ;; Org export css
   (setq org-export-htmlize-output-type 'css)
-
-
   ;; Org export backends
   (setq org-export-backends (quote (ascii html icalendar latex md)))
   
