@@ -1,5 +1,5 @@
 TERMINAL=gnome-terminal
-
+EDITOR=nano
 
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
@@ -117,7 +117,7 @@ fi
 #-------------------------------#
 
 # Access passwords from pass
-source ~/.dotfiles/pass/.local/bin/scripted-creds
+# source ~/.dotfiles/pass/.local/bin/scripted-creds
 
 # Run the screenfetch sript on login
 #source ~/.dotfiles/screenfetch/screenfetch
@@ -134,7 +134,7 @@ source ~/.dotfiles/powerline/.bash-powerline.sh
 
 # LIGO-based aliases
 # These are aliases specific to LIGO Scientific Collaboration Grid utilities
-source ~/.dotfiles/ligo/ligo_aliases
+# source ~/.dotfiles/ligo/ligo_aliases
 
 # Python-based customisations
 source ~/.dotfiles/jupyter/.jupyter.sh
@@ -163,8 +163,9 @@ source ~/.dotfiles/docker/docker.sh
 # Use your slr as a webcam
 alias slrwebcam='gphoto2 --stdout --capture-movie | ffmpeg -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 /dev/video2'
 
-
-source "/etc/profile.d/rvm.sh"
+if [ -f "/etc/profile.d/rvm.sh" ]; then
+    source "/etc/profile.d/rvm.sh"
+fi
 
 # Make my prompt "normal" for software carpentry
 # Don't forget you commented powerline out to do this!
@@ -172,3 +173,19 @@ source "/etc/profile.d/rvm.sh"
 
 # Money Stuff
 source ~/.dotfiles/ledger/ledger.sh
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/daniel/.local/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/daniel/.local/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/daniel/.local/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/daniel/.local/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
