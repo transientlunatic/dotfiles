@@ -229,11 +229,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-agenda-files
-   (quote
-    ("~/notes/meetings/ligo.org" "~/notes/students/weichangfeng.org" "~/notes/meetings/igr-grant.org" "~/notes/meetings/igr-group.org" "/home/daniel/repositories/rugby/notes.org" "/home/daniel/repositories/heron/notes.org" "/home/daniel/.dotfiles/notes.org" "/home/daniel/repositories/asimov/notes.org" "/home/daniel/repositories/ligo/gw-infographic/notes.org" "~/notes/todo.org")))
+   '("~/notes/meetings/ligo.org" "~/notes/students/weichangfeng.org" "~/notes/meetings/igr-grant.org" "~/notes/meetings/igr-group.org" "~/notes/todo.org"))
  '(package-selected-packages
-   (quote
-    (magit helm-projectile org-projectile json-mode jupyter dockerfile-mode minimap auctex-latexmk auctex yaml-mode markdown-mode workgroups use-package-hydra use-package-ensure-system-package use-package-el-get use-package-chords tide projectile ox-twiki ox-twbs org-protocol-jekyll org-journal-list org-journal org-bullets org-ac neotree multi-web-mode mmm-mode ledger-mode jedi f elpy dracula-theme diminish company-jedi bind-map auto-package-update)))
+   '(magit helm-projectile org-projectile json-mode jupyter dockerfile-mode minimap auctex-latexmk auctex yaml-mode markdown-mode workgroups use-package-hydra use-package-ensure-system-package use-package-el-get use-package-chords tide projectile ox-twiki ox-twbs org-protocol-jekyll org-journal-list org-journal org-bullets org-ac neotree multi-web-mode mmm-mode ledger-mode jedi f elpy dracula-theme diminish company-jedi bind-map auto-package-update))
  '(projectile-mode t nil (projectile)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

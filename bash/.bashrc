@@ -126,7 +126,9 @@ source ~/.dotfiles/pass/.local/bin/scripted-creds
 source ~/.dotfiles/bash/weather.sh
 
 # Use the powerline toolkit
-source ~/.dotfiles/powerline/.bash-powerline.sh
+#source ~/.dotfiles/powerline/.bash-powerline.sh
+eval "$(starship init bash)"
+
 
 # Get access to simple emoji conversions. An emoji can then be printed
 # with "to_emoji :grinning:" for example.
